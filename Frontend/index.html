@@ -1,0 +1,849 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#fbfaf7" />
+    <style>
+      html, body { width: 100%; max-width: 100%; overflow-x: hidden !important; }
+    </style>
+    <title>Boyate Smoothies &amp; Cafe</title>
+    <meta name="description" content="Boyate Smoothies & Cafe. Jugos naturales, smoothies, tazones, sandwiches y cafe de especialidad en Castilla Real." />
+    <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="./assets/favicon.svg?v=2" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./style.css?v=important" />
+  </head>
+  <body>
+
+    <!-- HEADER -->
+    <header class="site-header" id="top">
+      <a class="brand" href="#inicio" aria-label="Boyate inicio">
+        <span class="brand-name">Boyate</span>
+      </a>
+      <nav class="nav" aria-label="Navegacion principal">
+        <a href="#menu">Menú</a>
+        <a href="#ubicacion">Ubicación</a>
+        <a href="#pedidos">Pedidos</a>
+      </nav>
+      <a class="header-action" href="https://wa.me/573133056850" target="_blank" rel="noreferrer">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </header>
+
+    <!-- MOBILE NAV DRAWER -->
+    <div class="nav-drawer" id="navDrawer" aria-hidden="true">
+      <nav aria-label="Navegacion movil">
+        <a href="#menu" class="drawer-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+          Menú
+        </a>
+        <a href="#ubicacion" class="drawer-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+          Ubicación
+        </a>
+        <a href="#pedidos" class="drawer-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+          Pedidos
+        </a>
+        <a href="https://wa.me/573133056850" target="_blank" rel="noreferrer" class="drawer-link drawer-wa">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          WhatsApp
+        </a>
+      </nav>
+    </div>
+    <div class="nav-overlay" id="navOverlay"></div>
+
+    <main>
+
+      <!-- HERO -->
+      <section id="inicio" class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow reveal">Smoothies &amp; Cafe · Castilla Real</p>
+          <h1 class="reveal reveal-delay-1">Boyate</h1>
+          <p class="tagline reveal reveal-delay-2">SÉ REAL</p>
+          <p class="intro reveal reveal-delay-3">Jugos naturales, smoothies de poder, tazones, sandwiches y café de especialidad para domicilio o recogida.</p>
+          <div class="hero-actions reveal reveal-delay-4">
+            <a class="button primary" href="#menu">Ver menú</a>
+            <a class="button secondary" href="https://wa.me/573133056850?text=Hola%20Boyate%2C%20quiero%20hacer%20un%20pedido" target="_blank" rel="noreferrer">Pedir ahora</a>
+          </div>
+        </div>
+        <div class="hero-visual reveal reveal-delay-2" aria-label="Jugo más pedido">
+          <div class="drink-card">
+            <span class="badge">⭐ Más pedido</span>
+            <h2>El Consentido</h2>
+            <p>Arándanos, mora y fresa.</p>
+            <img class="drink-hero-img" src="./assets/El_Consentido.jpg" alt="El Consentido" />
+          </div>
+        </div>
+      </section>
+
+      <!-- INFO STRIP -->
+      <section class="info-strip" aria-label="Datos rápidos">
+        <article>
+          <span>Domicilio y recogida</span>
+          <strong><a href="tel:+573133056850">313 305 6850</a></strong>
+        </article>
+        <article>
+          <span>Dirección</span>
+          <strong>Cl. 10 #79-15 Castilla Real</strong>
+        </article>
+        <article>
+          <span>Jugo destacado</span>
+          <strong>El Consentido</strong>
+        </article>
+      </section>
+
+      <!-- MENU -->
+      <section id="menu" class="menu-section">
+        <div class="section-heading">
+          <p class="eyebrow">Menú</p>
+          <h2>Natural, fresco y real</h2>
+          <p class="section-sub">Selecciona talla y cantidad directamente desde el menú para armar tu pedido.</p>
+        </div>
+
+        <div class="menu-board">
+
+          <!-- SIGNATURE -->
+          <article class="menu-category wide" data-cat="signature">
+            <div class="category-title">
+              <h3>Signature</h3>
+            </div>
+            <div class="menu-grid">
+              <div class="menu-item" data-name="Banana-Boom" data-prices='{"S":9000,"M":11900,"L":13500}'>
+                <div class="menu-item-header"><img class="menu-img" src="./assets/Banana-Boom.jpg" alt="Banana-Boom" loading="lazy" /><div class="menu-item-text"><h4>Banana-Boom</h4><p>Banano, arándanos, mora.</p></div></div>
+                <div class="order-controls">
+                  <select class="size-select" aria-label="Talla">
+                    <option value="S">S — $9.000</option>
+                    <option value="M">M — $11.900</option>
+                    <option value="L">L — $13.500</option>
+                  </select>
+                  <div class="quantity-stepper" role="group" aria-label="Cantidad">
+                    <button type="button" class="qty-minus" aria-label="Restar">−</button>
+                    <span class="quantity-value" aria-live="polite">0</span>
+                    <button type="button" class="qty-plus" aria-label="Sumar">+</button>
+                  </div>
+                </div>
+              </div>
+              <div class="menu-item featured" data-name="El Consentido" data-prices='{"S":9000,"M":11900,"L":13500}'>
+                <div class="menu-item-header"><img class="menu-img" src="./assets/El_Consentido.jpg" alt="El Consentido" loading="lazy" /><div class="menu-item-text"><h4>El Consentido ⭐</h4><p>Arándanos, mora, fresa.</p></div></div>
+                <div class="order-controls">
+                  <select class="size-select" aria-label="Talla">
+                    <option value="S">S — $9.000</option>
+                    <option value="M">M — $11.900</option>
+                    <option value="L">L — $13.500</option>
+                  </select>
+                  <div class="quantity-stepper" role="group" aria-label="Cantidad">
+                    <button type="button" class="qty-minus" aria-label="Restar">−</button>
+                    <span class="quantity-value" aria-live="polite">0</span>
+                    <button type="button" class="qty-plus" aria-label="Sumar">+</button>
+                  </div>
+                </div>
+              </div>
+              <div class="menu-item" data-name="Zango" data-prices='{"S":9000,"M":11900,"L":13500}'>
+                <div class="menu-item-header"><img class="menu-img" src="./assets/Zango.jpg" alt="Zango" loading="lazy" /><div class="menu-item-text"><h4>Zango</h4><p>Mango, maracuyá, zanahoria.</p></div></div>
+                <div class="order-controls">
+                  <select class="size-select" aria-label="Talla">
+                    <option value="S">S — $9.000</option>
+                    <option value="M">M — $11.900</option>
+                    <option value="L">L — $13.500</option>
+                  </select>
+                  <div class="quantity-stepper" role="group" aria-label="Cantidad">
+                    <button type="button" class="qty-minus" aria-label="Restar">−</button>
+                    <span class="quantity-value" aria-live="polite">0</span>
+                    <button type="button" class="qty-plus" aria-label="Sumar">+</button>
+                  </div>
+                </div>
+              </div>
+              <div class="menu-item" data-name="Marulito" data-prices='{"S":9000,"M":11900,"L":13500}'>
+                <div class="menu-item-header"><img class="menu-img" src="./assets/Marulito.jpg" alt="Marulito" loading="lazy" /><div class="menu-item-text"><h4>Marulito</h4><p>Lulo, banano, maracuyá.</p></div></div>
+                <div class="order-controls">
+                  <select class="size-select" aria-label="Talla">
+                    <option value="S">S — $9.000</option>
+                    <option value="M">M — $11.900</option>
+                    <option value="L">L — $13.500</option>
+                  </select>
+                  <div class="quantity-stepper" role="group" aria-label="Cantidad">
+                    <button type="button" class="qty-minus" aria-label="Restar">−</button>
+                    <span class="quantity-value" aria-live="polite">0</span>
+                    <button type="button" class="qty-plus" aria-label="Sumar">+</button>
+                  </div>
+                </div>
+              </div>
+              <div class="menu-item" data-name="Pantera Rosa" data-prices='{"S":9000,"M":11900,"L":13500}'>
+                <div class="menu-item-header"><img class="menu-img" src="./assets/Pantera_Rosa.jpg" alt="Pantera Rosa" loading="lazy" /><div class="menu-item-text"><h4>Pantera Rosa</h4><p>Sandía, fresa, maracuyá.</p></div></div>
+                <div class="order-controls">
+                  <select class="size-select" aria-label="Talla">
+                    <option value="S">S — $9.000</option>
+                    <option value="M">M — $11.900</option>
+                    <option value="L">L — $13.500</option>
+                  </select>
+                  <div class="quantity-stepper" role="group" aria-label="Cantidad">
+                    <button type="button" class="qty-minus" aria-label="Restar">−</button>
+                    <span class="quantity-value" aria-live="polite">0</span>
+                    <button type="button" class="qty-plus" aria-label="Sumar">+</button>
+                  </div>
+                </div>
+              </div>
+              <div class="menu-item" data-name="Guanabana Bliss" data-prices='{"S":9000,"M":11900,"L":13500}'>
+                <div class="menu-item-header"><img class="menu-img" src="./assets/Guanabana_Bliss.jpg" alt="Guanabana Bliss" loading="lazy" /><div class="menu-item-text"><h4>Guanábana Bliss</h4><p>Guanábana, fresa, mango.</p></div></div>
+                <div class="order-controls">
+                  <select class="size-select" aria-label="Talla">
+                    <option value="S">S — $9.000</option>
+                    <option value="M">M — $11.900</option>
+                    <option value="L">L — $13.500</option>
+                  </select>
+                  <div class="quantity-stepper" role="group" aria-label="Cantidad">
+                    <button type="button" class="qty-minus" aria-label="Restar">−</button>
+                    <span class="quantity-value" aria-live="polite">0</span>
+                    <button type="button" class="qty-plus" aria-label="Sumar">+</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="prices">S: $9.000 &nbsp;·&nbsp; M: $11.900 &nbsp;·&nbsp; L: $13.500</p>
+          </article>
+
+          <!-- JUGOS -->
+          <article class="menu-category wide" data-cat="jugos">
+            <div class="category-title">
+              <h3>Jugos</h3>
+            </div>
+            <div class="menu-grid">
+              <div class="menu-item" data-name="Tropiko" data-prices='{"S":7900,"M":9500,"L":11900}'>
+                <div class="menu-item-header"><img class="menu-img" src="./assets/Tropiko.jpg" alt="Tropiko" loading="lazy" /><div class="menu-item-text"><h4>Tropiko</h4><p>Sandía, piña, naranja.</p></div></div>
+                <div class="order-controls">
+                  <select class="size-select" aria-label="Talla">
+                    <option value="S">S — $7.900</option>
+                    <option value="M">M — $9.500</option>
+                    <option value="L">L — $11.900</option>
+                  </select>
+                  <div class="quantity-stepper" role="group" aria-label="Cantidad">
+                    <button type="button" class="qty-minus" aria-label="Restar">−</button>
+                    <span class="quantity-value" aria-live="polite">0</span>
+                    <button type="button" class="qty-plus" aria-label="Sumar">+</button>
+                  </div>
+                </div>
+              </div>
+              <div class="menu-item" data-name="Mancer de Mango" data-prices='{"S":7900,"M":9500,"L":11900}'>
+                <div class="menu-item-header"><img class="menu-img" src="./assets/Mancer_de_Mango.jpg" alt="Mancer de Mango" loading="lazy" /><div class="menu-item-text"><h4>Mancer de Mango</h4><p>Mango, naranja, jengibre.</p></div></div>
+                <div class="order-controls">
+                  <select class="size-select" aria-label="Talla">
+                    <option value="S">S — $7.900</option>
+                    <option value="M">M — $9.500</option>
+                    <option value="L">L — $11.900</option>
+                  </select>
+                  <div class="quantity-stepper" role="group" aria-label="Cantidad">
+                    <button type="button" class="qty-minus" aria-label="Restar">−</button>
+                    <span class="quantity-value" aria-live="polite">0</span>
+                    <button type="button" class="qty-plus" aria-label="Sumar">+</button>
+                  </div>
+                </div>
+              </div>
+              <div class="menu-item" data-name="Neiva" data-prices='{"S":7900,"M":9500,"L":11900}'>
+                <div class="menu-item-header"><img class="menu-img" src="./assets/Neiva.jpg" alt="Neiva" loading="lazy" /><div class="menu-item-text"><h4>Neiva</h4><p>Maracuyá, mango, piña.</p></div></div>
+                <div class="order-controls">
+                  <select class="size-select" aria-label="Talla">
+                    <option value="S">S — $7.900</option>
+                    <option value="M">M — $9.500</option>
+                    <option value="L">L — $11.900</option>
+                  </select>
+                  <div class="quantity-stepper" role="group" aria-label="Cantidad">
+                    <button type="button" class="qty-minus" aria-label="Restar">−</button>
+                    <span class="quantity-value" aria-live="polite">0</span>
+                    <button type="button" class="qty-plus" aria-label="Sumar">+</button>
+                  </div>
+                </div>
+              </div>
+              <div class="menu-item" data-name="Verano" data-prices='{"S":7900,"M":9500,"L":11900}'>
+                <div class="menu-item-header"><img class="menu-img" src="./assets/Verano.jpg" alt="Verano" loading="lazy" /><div class="menu-item-text"><h4>Verano</h4><p>Sandía, limón, naranja, hierbabuena.</p></div></div>
+                <div class="order-controls">
+                  <select class="size-select" aria-label="Talla">
+                    <option value="S">S — $7.900</option>
+                    <option value="M">M — $9.500</option>
+                    <option value="L">L — $11.900</option>
+                  </select>
+                  <div class="quantity-stepper" role="group" aria-label="Cantidad">
+                    <button type="button" class="qty-minus" aria-label="Restar">−</button>
+                    <span class="quantity-value" aria-live="polite">0</span>
+                    <button type="button" class="qty-plus" aria-label="Sumar">+</button>
+                  </div>
+                </div>
+              </div>
+              <div class="menu-item" data-name="Spark" data-prices='{"S":7900,"M":9500,"L":11900}'>
+                <div class="menu-item-header"><img class="menu-img" src="./assets/Spark.jpg" alt="Spark" loading="lazy" /><div class="menu-item-text"><h4>Spark</h4><p>Fresa, piña, limón.</p></div></div>
+                <div class="order-controls">
+                  <select class="size-select" aria-label="Talla">
+                    <option value="S">S — $7.900</option>
+                    <option value="M">M — $9.500</option>
+                    <option value="L">L — $11.900</option>
+                  </select>
+                  <div class="quantity-stepper" role="group" aria-label="Cantidad">
+                    <button type="button" class="qty-minus" aria-label="Restar">−</button>
+                    <span class="quantity-value" aria-live="polite">0</span>
+                    <button type="button" class="qty-plus" aria-label="Sumar">+</button>
+                  </div>
+                </div>
+              </div>
+              <div class="menu-item" data-name="Amanecer de Mango" data-prices='{"S":7900,"M":9500,"L":11900}'>
+                <div class="menu-item-header"><img class="menu-img" src="./assets/Mancer_de_Mango.jpg" alt="Amanecer de Mango" loading="lazy" /><div class="menu-item-text"><h4>Amanecer de Mango</h4><p>Mango, naranja, jengibre.</p></div></div>
+                <div class="order-controls"><select class="size-select" aria-label="Talla"><option value="S">S — $7.900</option><option value="M">M — $9.500</option><option value="L">L — $11.900</option></select><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div>
+              </div>
+              <div class="menu-item" data-name="Amarillo Go" data-prices='{"S":7900,"M":9500,"L":11900}'>
+                <div class="menu-item-header"><div class="menu-item-text"><h4>Amarillo Go</h4><p>Mango, piña, naranja.</p></div></div>
+                <div class="order-controls"><select class="size-select" aria-label="Talla"><option value="S">S — $7.900</option><option value="M">M — $9.500</option><option value="L">L — $11.900</option></select><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div>
+              </div>
+            </div>
+            <p class="prices">S: $7.900 &nbsp;·&nbsp; M: $9.500 &nbsp;·&nbsp; L: $11.900</p>
+          </article>
+
+          <!-- ESTADO NATURAL -->
+          <article class="menu-category wide" data-cat="natural">
+            <div class="category-title">
+              <h3>Estado Natural</h3>
+            </div>
+            <div class="menu-grid">
+              <div class="menu-item" data-name="Genesis" data-prices='{"S":7900,"M":9500,"L":11900}'>
+                <div class="menu-item-header"><img class="menu-img" src="./assets/Genesis.jpg" alt="Genesis" loading="lazy" /><div class="menu-item-text"><h4>Génesis</h4><p>Espinaca, piña, jengibre, limón, chía.</p></div></div>
+                <div class="order-controls">
+                  <select class="size-select" aria-label="Talla">
+                    <option value="S">S — $7.900</option>
+                    <option value="M">M — $9.500</option>
+                    <option value="L">L — $11.900</option>
+                  </select>
+                  <div class="quantity-stepper" role="group" aria-label="Cantidad">
+                    <button type="button" class="qty-minus" aria-label="Restar">−</button>
+                    <span class="quantity-value" aria-live="polite">0</span>
+                    <button type="button" class="qty-plus" aria-label="Sumar">+</button>
+                  </div>
+                </div>
+              </div>
+              <div class="menu-item" data-name="Enfoque" data-prices='{"S":7900,"M":9500,"L":11900}'>
+                <div class="menu-item-header"><img class="menu-img" src="./assets/Enfoque.jpg" alt="Enfoque" loading="lazy" /><div class="menu-item-text"><h4>Enfoque</h4><p>Manzana verde, apio, espinaca, mango, jengibre, limón.</p></div></div>
+                <div class="order-controls">
+                  <select class="size-select" aria-label="Talla">
+                    <option value="S">S — $7.900</option>
+                    <option value="M">M — $9.500</option>
+                    <option value="L">L — $11.900</option>
+                  </select>
+                  <div class="quantity-stepper" role="group" aria-label="Cantidad">
+                    <button type="button" class="qty-minus" aria-label="Restar">−</button>
+                    <span class="quantity-value" aria-live="polite">0</span>
+                    <button type="button" class="qty-plus" aria-label="Sumar">+</button>
+                  </div>
+                </div>
+              </div>
+              <div class="menu-item" data-name="Beta-Mix" data-prices='{"S":7900,"M":9500,"L":11900}'>
+                <div class="menu-item-header"><img class="menu-img" src="./assets/Beta-Mix.jpg" alt="Beta-Mix" loading="lazy" /><div class="menu-item-text"><h4>Beta-Mix</h4><p>Betabel, zanahoria, naranja, piña, aloe.</p></div></div>
+                <div class="order-controls">
+                  <select class="size-select" aria-label="Talla">
+                    <option value="S">S — $7.900</option>
+                    <option value="M">M — $9.500</option>
+                    <option value="L">L — $11.900</option>
+                  </select>
+                  <div class="quantity-stepper" role="group" aria-label="Cantidad">
+                    <button type="button" class="qty-minus" aria-label="Restar">−</button>
+                    <span class="quantity-value" aria-live="polite">0</span>
+                    <button type="button" class="qty-plus" aria-label="Sumar">+</button>
+                  </div>
+                </div>
+              </div>
+              <div class="menu-item" data-name="Dorado Inmune" data-prices='{"S":7900,"M":9500,"L":11900}'>
+                <div class="menu-item-header"><img class="menu-img" src="./assets/Dorado_Inmune.jpg" alt="Dorado Inmune" loading="lazy" /><div class="menu-item-text"><h4>Dorado Inmune</h4><p>Zanahoria, naranja, limón, jengibre, cúrcuma, miel.</p></div></div>
+                <div class="order-controls">
+                  <select class="size-select" aria-label="Talla">
+                    <option value="S">S — $7.900</option>
+                    <option value="M">M — $9.500</option>
+                    <option value="L">L — $11.900</option>
+                  </select>
+                  <div class="quantity-stepper" role="group" aria-label="Cantidad">
+                    <button type="button" class="qty-minus" aria-label="Restar">−</button>
+                    <span class="quantity-value" aria-live="polite">0</span>
+                    <button type="button" class="qty-plus" aria-label="Sumar">+</button>
+                  </div>
+                </div>
+              </div>
+              <div class="menu-item" data-name="Equilibrio" data-prices='{"S":7900,"M":9500,"L":11900}'>
+                <div class="menu-item-header"><div class="menu-item-text"><h4>Equilibrio</h4><p>Piña, pepino, jengibre, aloe, chía. Digestivo natural.</p></div></div>
+                <div class="order-controls"><select class="size-select" aria-label="Talla"><option value="S">S — $7.900</option><option value="M">M — $9.500</option><option value="L">L — $11.900</option></select><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div>
+              </div>
+              <div class="menu-item" data-name="Verde Supremo" data-prices='{"S":7900,"M":9500,"L":11900}'>
+                <div class="menu-item-header"><div class="menu-item-text"><h4>Verde Supremo</h4><p>Espinaca, pepino, piña, apio, chía. Detox funcional.</p></div></div>
+                <div class="order-controls"><select class="size-select" aria-label="Talla"><option value="S">S — $7.900</option><option value="M">M — $9.500</option><option value="L">L — $11.900</option></select><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div>
+              </div>
+            </div>
+            <p class="prices">S: $7.900 &nbsp;·&nbsp; M: $9.500 &nbsp;·&nbsp; L: $11.900</p>
+          </article>
+
+          <!-- SMOOTHIES DE PODER -->
+          <article class="menu-category wide" data-cat="poder">
+            <div class="category-title">
+              <h3>Poder</h3>
+              <span>Extra +$2.000</span>
+            </div>
+            <div class="menu-grid">
+              <div class="menu-item" data-name="Vertice" data-prices='{"S":11900,"M":14900,"L":18900}'>
+                <div class="menu-item-header"><img class="menu-img" src="./assets/Vertice.jpg" alt="Vertice" loading="lazy" /><div class="menu-item-text"><h4>Vértice</h4><p>Mora, banano, betabel, proteína whey premium, leche vegetal.</p></div></div>
+                <div class="order-controls">
+                  <select class="size-select" aria-label="Talla">
+                    <option value="S">S — $11.900</option>
+                    <option value="M">M — $14.900</option>
+                    <option value="L">L — $18.900</option>
+                  </select>
+                  <div class="quantity-stepper" role="group" aria-label="Cantidad">
+                    <button type="button" class="qty-minus" aria-label="Restar">−</button>
+                    <span class="quantity-value" aria-live="polite">0</span>
+                    <button type="button" class="qty-plus" aria-label="Sumar">+</button>
+                  </div>
+                </div>
+              </div>
+              <div class="menu-item" data-name="Thor" data-prices='{"S":11900,"M":14900,"L":18900}'>
+                <div class="menu-item-header"><img class="menu-img" src="./assets/Thor.jpg" alt="Thor" loading="lazy" /><div class="menu-item-text"><h4>Thor</h4><p>Banano, avena, café, cocoa, proteína whey premium.</p></div></div>
+                <div class="order-controls">
+                  <select class="size-select" aria-label="Talla">
+                    <option value="S">S — $11.900</option>
+                    <option value="M">M — $14.900</option>
+                    <option value="L">L — $18.900</option>
+                  </select>
+                  <div class="quantity-stepper" role="group" aria-label="Cantidad">
+                    <button type="button" class="qty-minus" aria-label="Restar">−</button>
+                    <span class="quantity-value" aria-live="polite">0</span>
+                    <button type="button" class="qty-plus" aria-label="Sumar">+</button>
+                  </div>
+                </div>
+              </div>
+              <div class="menu-item" data-name="Insignia 701" data-prices='{"S":11900,"M":14900,"L":18900}'>
+                <div class="menu-item-header"><img class="menu-img" src="./assets/Insignia_701.jpg" alt="Insignia 701" loading="lazy" /><div class="menu-item-text"><h4>Insignia 701</h4><p>Avena, banano, espinaca, proteína whey premium.</p></div></div>
+                <div class="order-controls">
+                  <select class="size-select" aria-label="Talla">
+                    <option value="S">S — $11.900</option>
+                    <option value="M">M — $14.900</option>
+                    <option value="L">L — $18.900</option>
+                  </select>
+                  <div class="quantity-stepper" role="group" aria-label="Cantidad">
+                    <button type="button" class="qty-minus" aria-label="Restar">−</button>
+                    <span class="quantity-value" aria-live="polite">0</span>
+                    <button type="button" class="qty-plus" aria-label="Sumar">+</button>
+                  </div>
+                </div>
+              </div>
+              <div class="menu-item" data-name="Azul de Aguacate" data-prices='{"S":11900,"M":14900,"L":18900}'>
+                <div class="menu-item-header"><img class="menu-img" src="./assets/Azul_de_Aguacate.jpg" alt="Azul de Aguacate" loading="lazy" /><div class="menu-item-text"><h4>Azul de Aguacate</h4><p>Mango, aguacate, piña, limón, espirulina azul.</p></div></div>
+                <div class="order-controls">
+                  <select class="size-select" aria-label="Talla">
+                    <option value="S">S — $11.900</option>
+                    <option value="M">M — $14.900</option>
+                    <option value="L">L — $18.900</option>
+                  </select>
+                  <div class="quantity-stepper" role="group" aria-label="Cantidad">
+                    <button type="button" class="qty-minus" aria-label="Restar">−</button>
+                    <span class="quantity-value" aria-live="polite">0</span>
+                    <button type="button" class="qty-plus" aria-label="Sumar">+</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="prices">S: $11.900 &nbsp;·&nbsp; M: $14.900 &nbsp;·&nbsp; L: $18.900</p>
+            <div class="adicionales-sub">
+              <p class="adicionales-titulo">Complementos</p>
+              <div class="menu-grid">
+                <div class="menu-item" data-name="Leche Vegetal" data-prices='{"U":4500}'><div class="menu-item-header"><div class="menu-item-text"><h4>Leche Vegetal <span class="item-price">+$4.500</span></h4></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+                <div class="menu-item" data-name="Proteína Whey Premium" data-prices='{"U":4500}'><div class="menu-item-header"><div class="menu-item-text"><h4>Proteína Whey Premium <em>30g proteína real</em> <span class="item-price">+$4.500</span></h4></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+                <div class="menu-item" data-name="Proteína Vegetal Premium" data-prices='{"U":5500}'><div class="menu-item-header"><div class="menu-item-text"><h4>Proteína Vegetal Premium <em>Opción vegana</em> <span class="item-price">+$5.500</span></h4></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+                <div class="menu-item" data-name="Creatina Monohidratada" data-prices='{"U":3500}'><div class="menu-item-header"><div class="menu-item-text"><h4>Creatina Monohidratada <em>Más fuerza</em> <span class="item-price">+$3.500</span></h4></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+              </div>
+            </div>
+          </article>
+
+          <!-- TAZONES -->
+          <article class="menu-category wide" data-cat="tazones">
+            <div class="category-title"><h3>Tazones</h3></div>
+            <div class="menu-grid">
+              <div class="menu-item" data-name="Naidi" data-prices='{"U":15500}'><div class="menu-item-header"><img class="menu-img" src="./assets/Naidi.jpg" alt="Naidi" loading="lazy" /><div class="menu-item-text"><h4>Naidi <span class="item-price">$15.500</span></h4><p>Base de açaí, granola artesanal, fresa, banano y crema de almendras.</p></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+              <div class="menu-item" data-name="Huila" data-prices='{"U":13900}'><div class="menu-item-header"><img class="menu-img" src="./assets/Huila.jpg" alt="Huila" loading="lazy" /><div class="menu-item-text"><h4>Huila <span class="item-price">$13.900</span></h4><p>Yogurt griego, granola, mango, maracuyá y lluvia de miel.</p></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+              <div class="menu-item" data-name="Putumayo" data-prices='{"U":15500}'><div class="menu-item-header"><img class="menu-img" src="./assets/Putumayo.jpg" alt="Putumayo" loading="lazy" /><div class="menu-item-text"><h4>Putumayo <span class="item-price">$15.500</span></h4><p>Base de açaí, banano, arándanos, coco rallado y crema de almendras.</p></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+              <div class="menu-item" data-name="Coco Berry" data-prices='{"U":13900}'><div class="menu-item-header"><img class="menu-img" src="./assets/Coco_Berry.jpg" alt="Coco Berry" loading="lazy" /><div class="menu-item-text"><h4>Coco Berry <span class="item-price">$13.900</span></h4><p>Yogurt griego, arándanos, fresa, coco rallado y lluvia de miel.</p></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+            </div>
+            <div class="adicionales-sub">
+              <p class="adicionales-titulo">Ingrediente extra</p>
+              <div class="menu-grid">
+                <div class="menu-item" data-name="Mermelada frutos rojos" data-prices='{"U":2000}'><div class="menu-item-header"><div class="menu-item-text"><h4>Mermelada frutos rojos <span class="item-price">+$2.000</span></h4></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+                <div class="menu-item" data-name="Base Açaí / Yogurt griego" data-prices='{"U":2000}'><div class="menu-item-header"><div class="menu-item-text"><h4>Base Açaí / Yogurt griego <span class="item-price">+$2.000</span></h4></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+                <div class="menu-item" data-name="Crema de almendras" data-prices='{"U":2000}'><div class="menu-item-header"><div class="menu-item-text"><h4>Crema de almendras <span class="item-price">+$2.000</span></h4></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+                <div class="menu-item" data-name="Coco rallado" data-prices='{"U":2000}'><div class="menu-item-header"><div class="menu-item-text"><h4>Coco rallado <span class="item-price">+$2.000</span></h4></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+                <div class="menu-item" data-name="Granola" data-prices='{"U":2000}'><div class="menu-item-header"><div class="menu-item-text"><h4>Granola <span class="item-price">+$2.000</span></h4></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+                <div class="menu-item" data-name="Arándanos" data-prices='{"U":2000}'><div class="menu-item-header"><div class="menu-item-text"><h4>Arándanos <span class="item-price">+$2.000</span></h4></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+                <div class="menu-item" data-name="Maracuyá" data-prices='{"U":2000}'><div class="menu-item-header"><div class="menu-item-text"><h4>Maracuyá <span class="item-price">+$2.000</span></h4></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+                <div class="menu-item" data-name="Mango" data-prices='{"U":2000}'><div class="menu-item-header"><div class="menu-item-text"><h4>Mango <span class="item-price">+$2.000</span></h4></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+                <div class="menu-item" data-name="Fresa" data-prices='{"U":2000}'><div class="menu-item-header"><div class="menu-item-text"><h4>Fresa <span class="item-price">+$2.000</span></h4></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+              </div>
+            </div>
+          </article>
+
+          <!-- SANDWICHES -->
+          <article class="menu-category wide" data-cat="sandwiches">
+            <div class="category-title"><h3>Sandwiches</h3></div>
+            <div class="menu-grid">
+              <div class="menu-item" data-name="Panini de pollo" data-prices='{"U":12900}'><div class="menu-item-header"><div class="menu-item-text"><h4>Panini de pollo <span class="item-price">$12.900</span></h4><p>Pollo, mozzarella, aguacate, tomate.</p></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+              <div class="menu-item" data-name="Sandwich Especial" data-prices='{"U":9900}'><div class="menu-item-header"><div class="menu-item-text"><h4>Especial <span class="item-price">$9.900</span></h4><p>Mozzarella, jamón ahumado, lechuga, tomate.</p></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+              <div class="menu-item" data-name="Sandwich Clasico" data-prices='{"U":7500}'><div class="menu-item-header"><div class="menu-item-text"><h4>Clásico <span class="item-price">$7.500</span></h4><p>Mozzarella, jamón ahumado, aguacate.</p></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+              <div class="menu-item" data-name="Sandwich Atun" data-prices='{"U":14900}'><div class="menu-item-header"><div class="menu-item-text"><h4>Atún <span class="item-price">$14.900</span></h4><p>Atún, aguacate, tomate, lechuga.</p></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+              <div class="menu-item" data-name="Hawaiano" data-prices='{"U":9500}'><div class="menu-item-header"><div class="menu-item-text"><h4>Hawaiano <span class="item-price">$9.500</span></h4><p>Jamón ahumado, piña, mozzarella.</p></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+              <div class="menu-item" data-name="Avocado" data-prices='{"U":10600}'><div class="menu-item-header"><div class="menu-item-text"><h4>Avocado <span class="item-price">$10.600</span></h4><p>Aguacate, mozzarella, tomate, lechuga.</p></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+            </div>
+            <div class="adicionales-sub">
+              <p class="adicionales-titulo">Adicionales</p>
+              <div class="menu-grid">
+                <div class="menu-item" data-name="Extra Aguacate" data-prices='{"U":2000}'><div class="menu-item-header"><div class="menu-item-text"><h4>Extra Aguacate <span class="item-price">+$2.000</span></h4></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+              </div>
+            </div>
+          </article>
+
+          <!-- CAFE -->
+          <article class="menu-category wide" data-cat="cafe">
+            <div class="category-title"><h3>Café de especialidad</h3></div>
+            <div class="menu-grid">
+              <div class="menu-item" data-name="Espresso" data-prices='{"U":3500}'><div class="menu-item-header"><div class="menu-item-text"><h4>Espresso <span class="item-price">$3.500</span></h4></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+              <div class="menu-item" data-name="Americano" data-prices='{"U":3000}'><div class="menu-item-header"><div class="menu-item-text"><h4>Americano <span class="item-price">$3.000</span></h4></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+              <div class="menu-item" data-name="Latte" data-prices='{"U":5000}'><div class="menu-item-header"><div class="menu-item-text"><h4>Latte <span class="item-price">$5.000</span></h4></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+              <div class="menu-item" data-name="Cappuccino" data-prices='{"U":4500}'><div class="menu-item-header"><div class="menu-item-text"><h4>Cappuccino <span class="item-price">$4.500</span></h4></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+              <div class="menu-item" data-name="Mocca" data-prices='{"U":5500}'><div class="menu-item-header"><div class="menu-item-text"><h4>Mocca <span class="item-price">$5.500</span></h4></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+              <div class="menu-item" data-name="Campesino" data-prices='{"U":3900}'><div class="menu-item-header"><div class="menu-item-text"><h4>Campesino <span class="item-price">$3.900</span></h4></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+              <div class="menu-item" data-name="Chocolate" data-prices='{"U":4000}'><div class="menu-item-header"><div class="menu-item-text"><h4>Chocolate <span class="item-price">$4.000</span></h4></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+              <div class="menu-item" data-name="Chai Latte Frío" data-prices='{"U":11500}'><div class="menu-item-header"><div class="menu-item-text"><h4>Chai latte frío <span class="item-price">$11.500</span></h4></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+              <div class="menu-item" data-name="Aromática" data-prices='{"U":3500}'><div class="menu-item-header"><div class="menu-item-text"><h4>Aromática <span class="item-price">$3.500</span></h4></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+              <div class="menu-item" data-name="Infusión Natural" data-prices='{"U":3500}'><div class="menu-item-header"><div class="menu-item-text"><h4>Infusión Natural <span class="item-price">$3.500</span></h4></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+              <div class="menu-item" data-name="Café Frío Granizado" data-prices='{"U":9900}'><div class="menu-item-header"><div class="menu-item-text"><h4>Café Frío Granizado <span class="item-price">$9.900</span></h4></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+              <div class="menu-item" data-name="Latte Frío" data-prices='{"U":10000}'><div class="menu-item-header"><div class="menu-item-text"><h4>Latte Frío <span class="item-price">$10.000</span></h4></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+            </div>
+          </article>
+
+          <!-- DISPARO DE ENERGÍA -->
+          <article class="menu-category wide disparo-section" data-cat="disparo">
+            <div class="category-title"><h3>Disparo de Energía ⚡</h3></div>
+            <p class="disparo-desc">Jengibre, Limón, Naranja, Cúrcuma, Pimienta. Antiinflamatorio. Antioxidante. Activa las defensas.</p>
+            <div class="menu-grid">
+              <div class="menu-item" data-name="Shot Individual" data-prices='{"U":4500}'><div class="menu-item-header"><div class="menu-item-text"><h4>Shot Individual <span class="item-price">$4.500</span></h4><p>1 disparo de energía.</p></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+              <div class="menu-item" data-name="Combo 3 Shots" data-prices='{"U":12000}'><div class="menu-item-header"><div class="menu-item-text"><h4>Combo 3 Shots <span class="item-price">$12.000</span></h4><p>3 disparos de energía.</p></div></div><div class="order-controls"><span class="size-label-unit">Unidad</span><div class="quantity-stepper" role="group" aria-label="Cantidad"><button type="button" class="qty-minus" aria-label="Restar">−</button><span class="quantity-value" aria-live="polite">0</span><button type="button" class="qty-plus" aria-label="Sumar">+</button></div></div></div>
+            </div>
+          </article>
+
+        </div><!-- /menu-board -->
+      </section>
+
+      <!-- UBICACION -->
+      <section id="ubicacion" class="location-section">
+        <div class="location-copy">
+          <p class="eyebrow">Castilla Real</p>
+          <h2>Visítanos o pide para recoger</h2>
+          <p>Cl. 10 #79-15 Castilla Real. Servicio disponible para domicilio y recogida.</p>
+          <div class="location-actions">
+            <a class="button primary" href="https://www.google.com/maps/search/?api=1&query=Cl.%2010%20%2379-15%20Castilla%20Real" target="_blank" rel="noreferrer">Google Maps</a>
+            <a class="button secondary" href="https://waze.com/ul?q=Cl.%2010%20%2379-15%20Castilla%20Real&navigate=yes" target="_blank" rel="noreferrer">Waze</a>
+            <a class="button pickup" href="#pedidos">Pedir para recoger</a>
+          </div>
+        </div>
+        <div class="location-map" aria-hidden="true">
+          <div class="map-pin">
+            <svg viewBox="0 0 48 60" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M24 0C10.745 0 0 10.745 0 24c0 17 24 36 24 36s24-19 24-36C48 10.745 37.255 0 24 0z" fill="var(--green)"/>
+              <circle cx="24" cy="24" r="10" fill="white"/>
+            </svg>
+            <span>Boyate</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- PEDIDOS -->
+      <section id="pedidos" class="order-section">
+        <div class="order-copy">
+          <p class="eyebrow">Pedidos</p>
+          <h2>Arma tu pedido y envíalo por WhatsApp</h2>
+          <p>Elige tus productos desde el menú, define talla y cantidad, y Boyate recibe el resumen con total, hora y datos de entrega.</p>
+          <div class="order-note">
+            <strong>Tip Boyate</strong>
+            <span>El Consentido suele volar. Si lo quieres para una hora exacta, pídelo con tiempo.</span>
+          </div>
+        </div>
+        <form class="checkout-card" id="checkoutForm" novalidate>
+          <div class="cart-panel">
+            <div class="cart-header">
+              <span>Tu pedido</span>
+              <strong id="cartTotal">$0</strong>
+            </div>
+            <div class="cart-items" id="cartItems">
+              <p class="empty-cart">Agrega productos con los botones del menú.</p>
+            </div>
+          </div>
+          <div class="delivery-toggle" role="group" aria-label="Tipo de servicio">
+            <label><input type="radio" name="serviceType" value="Domicilio" checked /><span>Domicilio</span></label>
+            <label><input type="radio" name="serviceType" value="Recogida" /><span>Recogida</span></label>
+          </div>
+          <div class="checkout-grid">
+            <label>Nombre del cliente<input id="customerName" type="text" placeholder="Ej: Laura Pérez" autocomplete="name" /></label>
+            <label>Hora deseada<input id="orderTime" type="time" /></label>
+            <label class="wide-field delivery-field">Dirección<input id="customerAddress" type="text" placeholder="Ej: Cl. 10 #79-15" autocomplete="street-address" /></label>
+            <label class="delivery-field">Apartamento / detalle<input id="customerApartment" type="text" placeholder="Apto, torre, portería" /></label>
+            <label class="wide-field">Notas<input id="orderNotes" type="text" placeholder="Sin azúcar, poca miel, etc." /></label>
+          </div>
+          <button class="button primary whatsapp-submit" type="submit">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Enviar pedido a WhatsApp
+          </button>
+        </form>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span class="footer-brand">Boyate Smoothies &amp; Cafe</span>
+      <span class="footer-tagline">SÉ REAL</span>
+    </footer>
+
+<script type="module">
+/* ── FIREBASE ───────────────────────────────────────────── */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+import {
+  getFirestore, collection, addDoc, getDocs, query, where, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB8_J78K8i2Qr8tbdKSomnrTGWW5rxa6Qw",
+  authDomain: "boyateapp-63097.firebaseapp.com",
+  projectId: "boyateapp-63097",
+  storageBucket: "boyateapp-63097.firebasestorage.app",
+  messagingSenderId: "666457566155",
+  appId: "1:666457566155:web:29f465ef59d0750181244e"
+};
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+/* ── MENÚ MÓVIL ─────────────────────────────────────────── */
+const menuToggle = document.getElementById('menuToggle');
+const navDrawer  = document.getElementById('navDrawer');
+const navOverlay = document.getElementById('navOverlay');
+
+function openDrawer() {
+  menuToggle.classList.add('open');
+  menuToggle.setAttribute('aria-expanded', 'true');
+  navDrawer.classList.add('open');
+  navOverlay.classList.add('open');
+  navDrawer.removeAttribute('aria-hidden');
+  document.body.classList.add('drawer-open');
+  document.body.style.overflow = 'hidden';
+}
+function closeDrawer() {
+  menuToggle.classList.remove('open');
+  menuToggle.setAttribute('aria-expanded', 'false');
+  navDrawer.classList.remove('open');
+  navOverlay.classList.remove('open');
+  navDrawer.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('drawer-open');
+  document.body.style.overflow = '';
+}
+menuToggle.addEventListener('click', () =>
+  navDrawer.classList.contains('open') ? closeDrawer() : openDrawer()
+);
+navOverlay.addEventListener('click', closeDrawer);
+navDrawer.querySelectorAll('a[href^="#"]').forEach(l => l.addEventListener('click', closeDrawer));
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && navDrawer.classList.contains('open')) closeDrawer();
+});
+
+/* ── REVEAL ON SCROLL ───────────────────────────────────── */
+const revealEls = document.querySelectorAll('.reveal');
+if ('IntersectionObserver' in window) {
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) { entry.target.classList.add('visible'); io.unobserve(entry.target); }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => io.observe(el));
+} else {
+  revealEls.forEach(el => el.classList.add('visible'));
+}
+
+/* ── CARRITO ─────────────────────────────────────────────── */
+const cart = {};
+const cartItemsEl = document.getElementById('cartItems');
+const cartTotalEl = document.getElementById('cartTotal');
+
+function cartKey(name, size) { return name + '__' + size; }
+function fmtPrice(n) { return '$' + Number(n).toLocaleString('es-CO'); }
+
+function renderCart() {
+  const keys = Object.keys(cart);
+  if (keys.length === 0) {
+    cartItemsEl.innerHTML = '<p class="empty-cart">Agrega productos con los botones del menu.</p>';
+    cartTotalEl.textContent = '$0';
+    return;
+  }
+  let total = 0;
+  cartItemsEl.innerHTML = '';
+  keys.forEach(k => {
+    const item = cart[k];
+    const subtotal = item.unitPrice * item.qty;
+    total += subtotal;
+    const sizeLabel = item.size === 'U' ? '' : ' (' + item.size + ')';
+    const line = document.createElement('div');
+    line.className = 'cart-line';
+    line.innerHTML =
+      '<div class="cart-line-info">' +
+        '<strong>' + item.name + sizeLabel + '</strong>' +
+        '<span>' + item.qty + ' x ' + fmtPrice(item.unitPrice) + '</span>' +
+      '</div><b>' + fmtPrice(subtotal) + '</b>';
+    cartItemsEl.appendChild(line);
+  });
+  cartTotalEl.textContent = fmtPrice(total);
+}
+
+function setCartItem(name, size, unitPrice, qty) {
+  const k = cartKey(name, size);
+  if (qty <= 0) delete cart[k];
+  else cart[k] = { name, size, unitPrice, qty };
+  renderCart();
+}
+
+const allMenuItems = document.querySelectorAll('.menu-item[data-name]');
+
+function bindItemControls(menuItem) {
+  const name      = menuItem.dataset.name;
+  const prices    = JSON.parse(menuItem.dataset.prices || '{}');
+  const minusBtn  = menuItem.querySelector('.qty-minus');
+  const plusBtn   = menuItem.querySelector('.qty-plus');
+  const valueEl   = menuItem.querySelector('.quantity-value');
+  const sizeSelect = menuItem.querySelector('.size-select');
+  if (!minusBtn || !plusBtn || !valueEl) return;
+
+  let qty = 0;
+  const currentSize  = () => sizeSelect ? sizeSelect.value : (Object.keys(prices)[0] || 'U');
+  const currentPrice = () => prices[currentSize()] || Object.values(prices)[0] || 0;
+  function update() { valueEl.textContent = qty; setCartItem(name, currentSize(), currentPrice(), qty); }
+
+  plusBtn.addEventListener('click',  () => { qty++; update(); });
+  minusBtn.addEventListener('click', () => { if (qty > 0) { qty--; update(); } });
+  if (sizeSelect) sizeSelect.addEventListener('change', () => { if (qty > 0) update(); });
+  menuItem._resetQty = () => { qty = 0; valueEl.textContent = '0'; };
+}
+
+allMenuItems.forEach(bindItemControls);
+
+/* ── TOGGLE DOMICILIO / RECOGIDA ────────────────────────── */
+const serviceRadios  = document.querySelectorAll('input[name="serviceType"]');
+const deliveryFields = document.querySelectorAll('.delivery-field');
+
+function updateDeliveryFields() {
+  const val  = document.querySelector('input[name="serviceType"]:checked');
+  const hide = val && val.value === 'Recogida';
+  deliveryFields.forEach(f => f.classList.toggle('is-hidden', hide));
+}
+serviceRadios.forEach(r => r.addEventListener('change', updateDeliveryFields));
+updateDeliveryFields();
+
+/* ── FORMULARIO → FIRESTORE + WHATSAPP ─────────────────── */
+const form      = document.getElementById('checkoutForm');
+const WA_NUMBER = '573133056850';
+
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+
+  const cartKeys = Object.keys(cart);
+  if (cartKeys.length === 0) {
+    alert('Tu pedido está vacío. Agrega al menos un producto del menú.');
+    return;
+  }
+
+  const serviceType = (document.querySelector('input[name="serviceType"]:checked') || {}).value || 'Domicilio';
+  const name      = document.getElementById('customerName').value.trim();
+  const time      = document.getElementById('orderTime').value;
+  const address   = document.getElementById('customerAddress').value.trim();
+  const apartment = document.getElementById('customerApartment').value.trim();
+  const notes     = document.getElementById('orderNotes').value.trim();
+
+  if (!name) {
+    document.getElementById('customerName').focus();
+    alert('Por favor ingresa tu nombre.');
+    return;
+  }
+
+  // Validar hora ya tomada
+  if (time) {
+    try {
+      const horaSnap = await getDocs(query(
+        collection(db, 'pedidos'),
+        where('orderTime', '==', time),
+        where('status', '==', 'pendiente')
+      ));
+      if (!horaSnap.empty) {
+        alert('⏰ Esa hora ya está tomada. Por favor elige otra hora.');
+        document.getElementById('orderTime').focus();
+        return;
+      }
+    } catch (err) {
+      console.error('Error verificando hora:', err);
+    }
+  }
+
+  // Construir mensaje WhatsApp
+  const lines = ['🥤 *PEDIDO BOYATE*', ''];
+  let total = 0;
+  const itemsForDb = [];
+
+  cartKeys.forEach(k => {
+    const item     = cart[k];
+    const subtotal = item.unitPrice * item.qty;
+    total += subtotal;
+    const sizeLabel = item.size === 'U' ? '' : ' (' + item.size + ')';
+    lines.push('• ' + item.name + sizeLabel + ' x' + item.qty + ' = ' + fmtPrice(subtotal));
+    itemsForDb.push({ name: item.name, size: item.size, unitPrice: item.unitPrice, qty: item.qty, subtotal });
+  });
+
+  lines.push('', '💰 *Total: ' + fmtPrice(total) + '*', '');
+  lines.push((serviceType === 'Domicilio' ? '🛵' : '🏠') + ' *Servicio:* ' + serviceType);
+  if (serviceType === 'Domicilio') {
+    const dir = address + (apartment ? ' - ' + apartment : '');
+    if (dir.trim()) lines.push('📍 *Dirección:* ' + dir);
+  }
+  if (name)  lines.push('👤 *Nombre:* ' + name);
+  if (time)  lines.push('🕐 *Hora:* ' + time);
+  if (notes) lines.push('📝 *Notas:* ' + notes);
+  lines.push('', '👋 ¡Gracias!');
+
+  // Guardar en Firestore
+  try {
+    await addDoc(collection(db, 'pedidos'), {
+      items: itemsForDb,
+      total,
+      serviceType,
+      customerName: name,
+      orderTime: time || null,
+      address: serviceType === 'Domicilio' ? address : null,
+      apartment: serviceType === 'Domicilio' ? apartment : null,
+      notes: notes || null,
+      status: 'pendiente',
+      createdAt: serverTimestamp()
+    });
+    alert('✅ ¡Pedido tomado! Te redirigimos a WhatsApp para confirmar.');
+  } catch (err) {
+    console.error('Error guardando pedido:', err);
+    alert('⚠️ No se pudo registrar el pedido, pero igual te enviamos a WhatsApp.');
+  }
+
+  window.open('https://api.whatsapp.com/send?phone=' + WA_NUMBER + '&text=' + encodeURIComponent(lines.join('\n')), '_blank');
+
+  // Limpiar
+  Object.keys(cart).forEach(k => delete cart[k]);
+  renderCart();
+  allMenuItems.forEach(item => { if (item._resetQty) item._resetQty(); });
+  form.reset();
+  updateDeliveryFields();
+});
+</script>
+
+  </body>
+</html>

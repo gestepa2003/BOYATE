@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
+  <title>Boyate — Admin</title>
+  <style>
+    :root {
+      --green: #245a46;
+      --green-dark: #1a4234;
+      --lilac: #e7d5e7;
+      --black: #111;
+      --white: #fbfaf7;
+      --paper: #f5f1ed;
+      --muted: #746f6b;
+      --radius: 10px;
+    }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:'DM Sans', Arial, sans-serif; background:var(--paper); color:var(--black); }
+    header { background:var(--black); color:var(--white); padding:18px 24px; display:flex; justify-content:space-between; align-items:center; }
+    header h1 { margin:0; font-size:20px; font-family:Georgia, serif; }
+    header button { background:var(--lilac); color:var(--black); border:none; padding:8px 16px; border-radius:999px; font-weight:700; cursor:pointer; font-size:12px; text-transform:uppercase; letter-spacing:0.06em; }
+
+    #loginScreen { max-width:380px; margin:80px auto; background:var(--white); padding:32px; border-radius:var(--radius); box-shadow:0 8px 30px rgba(0,0,0,0.08); }
+    #loginScreen h2 { margin-top:0; font-family:Georgia, serif; color:var(--green); }
+    #loginScreen input { display:block; width:100%; margin-bottom:12px; padding:10px 12px; border:1px solid rgba(0,0,0,0.15); border-radius:7px; font-size:14px; }
+    #loginScreen button { width:100%; padding:12px; background:var(--green); color:var(--white); border:none; border-radius:7px; font-weight:700; cursor:pointer; font-size:14px; }
+    #loginError { color:#b00020; font-size:13px; margin-top:8px; min-height:18px; }
+
+    main { display:none; max-width:1100px; margin:0 auto; padding:24px; }
+    .toolbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; flex-wrap:wrap; gap:10px; }
+    .toolbar select, .toolbar button {
+      padding:10px 14px; border-radius:7px; border:1px solid rgba(0,0,0,0.15); font-size:13px; font-family:inherit;
+    }
+    .toolbar button.primary { background:var(--green); color:var(--white); border:none; font-weight:700; cursor:pointer; }
+
+    table { width:100%; border-collapse:collapse; background:var(--white); border-radius:var(--radius); overflow:hidden; box-shadow:0 4px 16px rgba(0,0,0,0.05); }
+    th, td { padding:10px 12px; text-align:left; border-bottom:1px solid rgba(0,0,0,0.06); font-size:13px; vertical-align:middle; }
+    th { background:var(--green); color:var(--white); font-size:11px; text-transform:uppercase; letter-spacing:0.06em; }
+    tr:hover td { background:rgba(231,213,231,0.18); }
+    td input[type="text"], td input[type="number"] {
+      width:100%; padding:6px 8px; border:1px solid rgba(0,0,0,0.12); border-radius:5px; font-size:13px; font-family:inherit;
+    }
+    td.precio { width:90px; }
+    .toggle-disp {
+      width:42px; height:24px; border-radius:999px; border:none; cursor:pointer; position:relative; transition:background 0.2s;
+    }
+    .toggle-disp.on { background:var(--green); }
+    .toggle-disp.off { background:#ccc; }
+    .toggle-disp::after {
+      content:''; position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%; background:#fff; transition:left 0.2s;
+    }
+    .toggle-disp.on::after { left:21px; }
+    .row-actions { display:flex; gap:6px; white-space:nowrap; }
+    .row-actions button {
+      padding:6px 10px; border-radius:5px; border:1px solid rgba(0,0,0,0.12); background:#fff; cursor:pointer; font-size:12px;
+    }
+    .row-actions button.save { background:var(--green); color:#fff; border:none; }
+    .row-actions button.delete { background:#fdecea; color:#b00020; border:none; }
+
+    #status { position:fixed; bottom:18px; right:18px; background:var(--black); color:#fff; padding:10px 18px; border-radius:999px; font-size:13px; opacity:0; transition:opacity 0.3s; pointer-events:none; }
+    #status.show { opacity:1; }
+
+    .new-row td { background:rgba(36,90,70,0.04); }
+
+    /* ── TABS ─────────────────────────────────────────── */
+    .tabs { display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap; }
+    .tab-btn {
+      padding:10px 18px; border-radius:999px; border:1.5px solid var(--green); background:#fff;
+      color:var(--green); font-weight:700; font-size:12px; letter-spacing:0.06em; text-transform:uppercase;
+      cursor:pointer; transition:background 0.2s, color 0.2s;
+    }
+    .tab-btn.active { background:var(--green); color:#fff; }
+    .tab-panel { display:none; }
+    .tab-panel.active { display:block; }
+
+    /* ── PEDIDOS ──────────────────────────────────────── */
+    .order-card {
+      background:var(--white); border-radius:var(--radius); padding:16px 18px; margin-bottom:12px;
+      box-shadow:0 4px 16px rgba(0,0,0,0.05); border-left:5px solid #ccc;
+    }
+    .order-card.pendiente { border-left-color:#d9a334; }
+    .order-card.entregado { border-left-color:var(--green); }
+    .order-card.cancelado { border-left-color:#b00020; opacity:0.7; }
+    .order-head { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap; margin-bottom:8px; }
+    .order-head h3 { margin:0; font-size:15px; font-family:Georgia, serif; color:var(--green); }
+    .order-meta { font-size:12px; color:var(--muted); margin-top:2px; }
+    .order-items { font-size:13px; margin:8px 0; padding-left:18px; }
+    .order-items li { margin-bottom:2px; }
+    .order-total { font-weight:700; font-size:14px; }
+    .order-status-select {
+      padding:6px 10px; border-radius:6px; border:1px solid rgba(0,0,0,0.15); font-size:12px; font-family:inherit; cursor:pointer;
+    }
+    .order-status-select.pendiente { background:#fff7e6; color:#a06a00; }
+    .order-status-select.entregado { background:#e6f3ec; color:var(--green); }
+    .order-status-select.cancelado { background:#fdecea; color:#b00020; }
+    .order-extra { font-size:12px; color:var(--muted); margin-top:6px; }
+
+    /* ── ESTADISTICAS ─────────────────────────────────── */
+    .stats-toolbar { display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap; align-items:center; }
+    .stats-toolbar select { padding:10px 14px; border-radius:7px; border:1px solid rgba(0,0,0,0.15); font-size:13px; font-family:inherit; }
+    .stats-summary { display:flex; gap:16px; margin-bottom:18px; flex-wrap:wrap; }
+    .stat-box {
+      background:var(--white); border-radius:var(--radius); padding:14px 20px; box-shadow:0 4px 16px rgba(0,0,0,0.05);
+      min-width:140px;
+    }
+    .stat-box .num { font-size:24px; font-weight:700; color:var(--green); font-family:Georgia, serif; }
+    .stat-box .label { font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--muted); }
+    .stats-table th:nth-child(2), .stats-table td:nth-child(2),
+    .stats-table th:nth-child(3), .stats-table td:nth-child(3) { text-align:right; }
+  </style>
+</head>
+<body>
+
+  <div id="loginScreen">
+    <h2>Boyate — Admin</h2>
+    <input type="email" id="loginEmail" placeholder="Correo" autocomplete="username" />
+    <input type="password" id="loginPassword" placeholder="Contraseña" autocomplete="current-password" />
+    <button id="loginBtn">Ingresar</button>
+    <div id="loginError"></div>
+  </div>
+
+  <header style="display:none" id="appHeader">
+    <h1>Boyate · Panel Admin</h1>
+    <button id="logoutBtn">Cerrar sesión</button>
+  </header>
+
+  <main id="appMain">
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="productos">Productos</button>
+      <button class="tab-btn" data-tab="pedidos">Pedidos</button>
+      <button class="tab-btn" data-tab="stats">Estadísticas</button>
+    </div>
+
+    <!-- PRODUCTOS -->
+    <div class="tab-panel active" id="tab-productos">
+      <div class="toolbar">
+        <select id="categoriaFilter">
+          <option value="">Todas las categorías</option>
+        </select>
+        <button class="primary" id="addRowBtn">+ Agregar producto</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Categoría</th>
+            <th>Descripción</th>
+            <th>Imagen (archivo)</th>
+            <th>S</th>
+            <th>M</th>
+            <th>L</th>
+            <th>U</th>
+            <th>Disponible</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="productsBody"></tbody>
+      </table>
+    </div>
+
+    <!-- PEDIDOS -->
+    <div class="tab-panel" id="tab-pedidos">
+      <div class="toolbar">
+        <select id="orderStatusFilter">
+          <option value="">Todos los estados</option>
+          <option value="pendiente">Pendientes</option>
+          <option value="entregado">Entregados</option>
+          <option value="cancelado">Cancelados</option>
+        </select>
+        <button id="refreshOrdersBtn">Actualizar</button>
+      </div>
+      <div id="ordersList"></div>
+    </div>
+
+    <!-- ESTADISTICAS -->
+    <div class="tab-panel" id="tab-stats">
+      <div class="stats-toolbar">
+        <label for="statsRange">Periodo:</label>
+        <select id="statsRange">
+          <option value="hoy">Hoy</option>
+          <option value="7d">Últimos 7 días</option>
+          <option value="30d">Últimos 30 días</option>
+          <option value="all" selected>Todo</option>
+        </select>
+      </div>
+      <div class="stats-summary" id="statsSummary"></div>
+      <table class="stats-table">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Unidades pedidas</th>
+            <th>Total generado</th>
+          </tr>
+        </thead>
+        <tbody id="statsBody"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <div id="status"></div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+    import {
+      getFirestore, collection, getDocs, doc, setDoc, deleteDoc, updateDoc, query, orderBy
+    } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+    import {
+      getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut
+    } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyB8_J78K8i2Qr8tbdKSomnrTGWW5rxa6Qw",
+      authDomain: "boyateapp-63097.firebaseapp.com",
+      projectId: "boyateapp-63097",
+      storageBucket: "boyateapp-63097.firebasestorage.app",
+      messagingSenderId: "666457566155",
+      appId: "1:666457566155:web:29f465ef59d0750181244e"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    const loginScreen = document.getElementById('loginScreen');
+    const appHeader = document.getElementById('appHeader');
+    const appMain = document.getElementById('appMain');
+    const loginError = document.getElementById('loginError');
+    const statusEl = document.getElementById('status');
+
+    function showStatus(msg) {
+      statusEl.textContent = msg;
+      statusEl.classList.add('show');
+      setTimeout(() => statusEl.classList.remove('show'), 2000);
+    }
+
+    /* ── LOGIN ─────────────────────────────────────────── */
+    document.getElementById('loginBtn').addEventListener('click', async () => {
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      loginError.textContent = '';
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+      } catch (e) {
+        loginError.textContent = 'Correo o contraseña incorrectos.';
+      }
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        loginScreen.style.display = 'none';
+        appHeader.style.display = 'flex';
+        appMain.style.display = 'block';
+        loadAll();
+        loadOrders();
+      } else {
+        loginScreen.style.display = 'block';
+        appHeader.style.display = 'none';
+        appMain.style.display = 'none';
+      }
+    });
+
+    /* ── TABS ──────────────────────────────────────────── */
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+        if (btn.dataset.tab === 'pedidos') loadOrders();
+        if (btn.dataset.tab === 'stats') renderStats();
+      });
+    });
+
+    /* ── DATOS ─────────────────────────────────────────── */
+    let categorias = [];
+    let productos = [];
+
+    async function loadAll() {
+      const catsSnap = await getDocs(query(collection(db, 'categorias'), orderBy('orden')));
+      categorias = catsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+      const prodsSnap = await getDocs(query(collection(db, 'productos'), orderBy('orden')));
+      productos = prodsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+      const filterSelect = document.getElementById('categoriaFilter');
+      filterSelect.innerHTML = '<option value="">Todas las categorías</option>' +
+        categorias.map(c => `<option value="${c.id}">${c.nombre}</option>`).join('');
+
+      renderTable();
+    }
+
+    document.getElementById('categoriaFilter').addEventListener('change', renderTable);
+
+    function categoriaOptions(selectedId) {
+      return categorias.map(c =>
+        `<option value="${c.id}" ${c.id === selectedId ? 'selected' : ''}>${c.nombre}</option>`
+      ).join('');
+    }
+
+    function renderTable() {
+      const filter = document.getElementById('categoriaFilter').value;
+      const tbody = document.getElementById('productsBody');
+      const list = filter ? productos.filter(p => p.categoriaId === filter) : productos;
+
+      tbody.innerHTML = list.map(p => rowHtml(p)).join('');
+
+      tbody.querySelectorAll('tr').forEach(tr => bindRow(tr));
+    }
+
+    function rowHtml(p) {
+      const precios = p.precios || {};
+      return `
+        <tr data-id="${p.id}">
+          <td><input type="text" class="f-nombre" value="${p.nombre || ''}" /></td>
+          <td><select class="f-categoria">${categoriaOptions(p.categoriaId)}</select></td>
+          <td><input type="text" class="f-descripcion" value="${p.descripcion || ''}" /></td>
+          <td><input type="text" class="f-imagen" value="${p.imagen || ''}" placeholder="nombre.jpg" /></td>
+          <td class="precio"><input type="number" class="f-S" value="${precios.S ?? ''}" /></td>
+          <td class="precio"><input type="number" class="f-M" value="${precios.M ?? ''}" /></td>
+          <td class="precio"><input type="number" class="f-L" value="${precios.L ?? ''}" /></td>
+          <td class="precio"><input type="number" class="f-U" value="${precios.U ?? ''}" /></td>
+          <td><button type="button" class="toggle-disp ${p.disponible ? 'on' : 'off'}" data-on="${p.disponible ? '1' : '0'}"></button></td>
+          <td class="row-actions">
+            <button type="button" class="save">Guardar</button>
+            <button type="button" class="delete">Eliminar</button>
+          </td>
+        </tr>`;
+    }
+
+    function bindRow(tr) {
+      const toggleBtn = tr.querySelector('.toggle-disp');
+      toggleBtn.addEventListener('click', () => {
+        const isOn = toggleBtn.dataset.on === '1';
+        toggleBtn.dataset.on = isOn ? '0' : '1';
+        toggleBtn.classList.toggle('on', !isOn);
+        toggleBtn.classList.toggle('off', isOn);
+      });
+
+      tr.querySelector('.save').addEventListener('click', () => saveRow(tr));
+      tr.querySelector('.delete').addEventListener('click', () => deleteRow(tr));
+    }
+
+    function numOrNull(val) {
+      if (val === '' || val === null || val === undefined) return null;
+      const n = Number(val);
+      return isNaN(n) ? null : n;
+    }
+
+    async function saveRow(tr) {
+      const id = tr.dataset.id;
+      const nombre = tr.querySelector('.f-nombre').value.trim();
+      const categoriaId = tr.querySelector('.f-categoria').value;
+      const descripcion = tr.querySelector('.f-descripcion').value.trim();
+      const imagen = tr.querySelector('.f-imagen').value.trim();
+      const S = numOrNull(tr.querySelector('.f-S').value);
+      const M = numOrNull(tr.querySelector('.f-M').value);
+      const L = numOrNull(tr.querySelector('.f-L').value);
+      const U = numOrNull(tr.querySelector('.f-U').value);
+      const disponible = tr.querySelector('.toggle-disp').dataset.on === '1';
+
+      const precios = {};
+      if (S !== null) precios.S = S;
+      if (M !== null) precios.M = M;
+      if (L !== null) precios.L = L;
+      if (U !== null) precios.U = U;
+
+      const existing = productos.find(p => p.id === id) || {};
+      const data = {
+        nombre, categoriaId, descripcion, imagen, precios, disponible,
+        orden: existing.orden ?? 999,
+        destacado: existing.destacado ?? false,
+        esComplemento: existing.esComplemento ?? false
+      };
+
+      try {
+        await setDoc(doc(db, 'productos', id || slugify(nombre)), data);
+        showStatus('Guardado ✓');
+        await loadAll();
+      } catch (e) {
+        showStatus('Error al guardar');
+        console.error(e);
+      }
+    }
+
+    async function deleteRow(tr) {
+      const id = tr.dataset.id;
+      if (!confirm('¿Eliminar este producto?')) return;
+      try {
+        await deleteDoc(doc(db, 'productos', id));
+        showStatus('Eliminado');
+        await loadAll();
+      } catch (e) {
+        showStatus('Error al eliminar');
+        console.error(e);
+      }
+    }
+
+    function slugify(text) {
+      return text.toString().toLowerCase().trim()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '') + '-' + Date.now().toString().slice(-5);
+    }
+
+    document.getElementById('addRowBtn').addEventListener('click', () => {
+      const tbody = document.getElementById('productsBody');
+      const newProd = {
+        id: '', nombre: 'Nuevo producto', categoriaId: categorias[0]?.id || '',
+        descripcion: '', imagen: '', precios: {}, disponible: true
+      };
+      tbody.insertAdjacentHTML('afterbegin', rowHtml(newProd));
+      const tr = tbody.querySelector('tr');
+      tr.classList.add('new-row');
+      bindRow(tr);
+    });
+
+    /* ── PEDIDOS ───────────────────────────────────────── */
+    let pedidos = [];
+
+    function fmtPrice(n) {
+      return '$' + Number(n || 0).toLocaleString('es-CO');
+    }
+
+    function fmtDate(ts) {
+      if (!ts) return '';
+      const d = ts.toDate ? ts.toDate() : new Date(ts);
+      return d.toLocaleString('es-CO', { dateStyle: 'short', timeStyle: 'short' });
+    }
+
+    async function loadOrders() {
+      try {
+        const snap = await getDocs(query(collection(db, 'pedidos'), orderBy('createdAt', 'desc')));
+        pedidos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        renderOrders();
+      } catch (e) {
+        console.error('Error cargando pedidos:', e);
+        document.getElementById('ordersList').innerHTML = '<p>No se pudieron cargar los pedidos.</p>';
+      }
+    }
+
+    document.getElementById('refreshOrdersBtn').addEventListener('click', loadOrders);
+    document.getElementById('orderStatusFilter').addEventListener('change', renderOrders);
+
+    function renderOrders() {
+      const filter = document.getElementById('orderStatusFilter').value;
+      const list = filter ? pedidos.filter(p => p.status === filter) : pedidos;
+      const container = document.getElementById('ordersList');
+
+      if (list.length === 0) {
+        container.innerHTML = '<p style="color:var(--muted)">No hay pedidos para mostrar.</p>';
+        return;
+      }
+
+      container.innerHTML = list.map(p => orderCardHtml(p)).join('');
+
+      container.querySelectorAll('.order-status-select').forEach(sel => {
+        sel.addEventListener('change', async () => {
+          const id = sel.dataset.id;
+          const newStatus = sel.value;
+          sel.className = 'order-status-select ' + newStatus;
+          try {
+            await updateDoc(doc(db, 'pedidos', id), { status: newStatus });
+            const pedido = pedidos.find(p => p.id === id);
+            if (pedido) pedido.status = newStatus;
+            const card = sel.closest('.order-card');
+            card.className = 'order-card ' + newStatus;
+            showStatus('Estado actualizado ✓');
+          } catch (e) {
+            showStatus('Error al actualizar');
+            console.error(e);
+          }
+        });
+      });
+    }
+
+    function orderCardHtml(p) {
+      const status = p.status || 'pendiente';
+      const itemsHtml = (p.items || []).map(it => {
+        const sizeLabel = (it.size === 'U' || !it.size) ? '' : ` (${it.size})`;
+        return `<li>${it.name}${sizeLabel} x${it.qty} — ${fmtPrice(it.subtotal)}</li>`;
+      }).join('');
+
+      let extra = '';
+      if (p.serviceType === 'Domicilio') {
+        const dir = [p.address, p.apartment].filter(Boolean).join(' - ');
+        if (dir) extra += `📍 ${dir}<br>`;
+      }
+      if (p.orderTime) extra += `🕐 Hora deseada: ${p.orderTime}<br>`;
+      if (p.notes) extra += `📝 ${p.notes}`;
+
+      return `
+        <div class="order-card ${status}">
+          <div class="order-head">
+            <div>
+              <h3>${p.customerName || 'Cliente'} — ${p.serviceType || ''}</h3>
+              <div class="order-meta">${fmtDate(p.createdAt)}</div>
+            </div>
+            <div style="text-align:right">
+              <div class="order-total">${fmtPrice(p.total)}</div>
+              <select class="order-status-select ${status}" data-id="${p.id}">
+                <option value="pendiente" ${status === 'pendiente' ? 'selected' : ''}>Pendiente</option>
+                <option value="entregado" ${status === 'entregado' ? 'selected' : ''}>Entregado</option>
+                <option value="cancelado" ${status === 'cancelado' ? 'selected' : ''}>Cancelado</option>
+              </select>
+            </div>
+          </div>
+          <ul class="order-items">${itemsHtml}</ul>
+          ${extra ? `<div class="order-extra">${extra}</div>` : ''}
+        </div>`;
+    }
+
+    /* ── ESTADISTICAS ──────────────────────────────────── */
+    document.getElementById('statsRange').addEventListener('change', renderStats);
+
+    function renderStats() {
+      const range = document.getElementById('statsRange').value;
+      const now = new Date();
+      let cutoff = null;
+
+      if (range === 'hoy') {
+        cutoff = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      } else if (range === '7d') {
+        cutoff = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+      } else if (range === '30d') {
+        cutoff = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+      }
+
+      const filtered = pedidos.filter(p => {
+        if (p.status === 'cancelado') return false;
+        if (!cutoff) return true;
+        const d = p.createdAt && p.createdAt.toDate ? p.createdAt.toDate() : null;
+        if (!d) return true;
+        return d >= cutoff;
+      });
+
+      let totalPedidos = filtered.length;
+      let totalIngresos = 0;
+      const productCounts = {};
+
+      filtered.forEach(p => {
+        totalIngresos += Number(p.total || 0);
+        (p.items || []).forEach(it => {
+          const sizeLabel = (it.size === 'U' || !it.size) ? '' : ` (${it.size})`;
+          const key = it.name + sizeLabel;
+          if (!productCounts[key]) productCounts[key] = { qty: 0, total: 0 };
+          productCounts[key].qty += it.qty || 0;
+          productCounts[key].total += it.subtotal || 0;
+        });
+      });
+
+      document.getElementById('statsSummary').innerHTML = `
+        <div class="stat-box"><div class="num">${totalPedidos}</div><div class="label">Pedidos</div></div>
+        <div class="stat-box"><div class="num">${fmtPrice(totalIngresos)}</div><div class="label">Ingresos</div></div>
+      `;
+
+      const rows = Object.entries(productCounts)
+        .sort((a, b) => b[1].qty - a[1].qty)
+        .map(([name, data]) => `
+          <tr>
+            <td>${name}</td>
+            <td>${data.qty}</td>
+            <td>${fmtPrice(data.total)}</td>
+          </tr>`)
+        .join('');
+
+      document.getElementById('statsBody').innerHTML = rows || '<tr><td colspan="3">Sin datos para este periodo.</td></tr>';
+    }
+
+  </script>
+</body>
+</html>
