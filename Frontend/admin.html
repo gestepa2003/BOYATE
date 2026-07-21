@@ -18,31 +18,49 @@
     }
     * { box-sizing: border-box; }
     body { margin:0; font-family:'DM Sans', Arial, sans-serif; background:var(--paper); color:var(--black); }
-    header { background:var(--black); color:var(--white); padding:18px 24px; display:flex; justify-content:space-between; align-items:center; }
-    header h1 { margin:0; font-size:20px; font-family:Georgia, serif; }
-    header button { background:var(--lilac); color:var(--black); border:none; padding:8px 16px; border-radius:999px; font-weight:700; cursor:pointer; font-size:12px; text-transform:uppercase; letter-spacing:0.06em; }
+    header { background:var(--black); color:var(--white); padding:14px 18px; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:50; }
+    header h1 { margin:0; font-size:17px; font-family:Georgia, serif; }
+    header button { background:var(--lilac); color:var(--black); border:none; padding:8px 16px; border-radius:999px; font-weight:700; cursor:pointer; font-size:12px; text-transform:uppercase; letter-spacing:0.06em; white-space:nowrap; }
 
     #loginScreen { max-width:380px; margin:80px auto; background:var(--white); padding:32px; border-radius:var(--radius); box-shadow:0 8px 30px rgba(0,0,0,0.08); }
     #loginScreen h2 { margin-top:0; font-family:Georgia, serif; color:var(--green); }
-    #loginScreen input { display:block; width:100%; margin-bottom:12px; padding:10px 12px; border:1px solid rgba(0,0,0,0.15); border-radius:7px; font-size:14px; }
+    #loginScreen input { display:block; width:100%; margin-bottom:12px; padding:10px 12px; border:1px solid rgba(0,0,0,0.15); border-radius:7px; font-size:16px; }
     #loginScreen button { width:100%; padding:12px; background:var(--green); color:var(--white); border:none; border-radius:7px; font-weight:700; cursor:pointer; font-size:14px; }
     #loginError { color:#b00020; font-size:13px; margin-top:8px; min-height:18px; }
 
-    main { display:none; max-width:1100px; margin:0 auto; padding:24px; }
-    .toolbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; flex-wrap:wrap; gap:10px; }
-    .toolbar select, .toolbar button {
+    main { display:none; max-width:1200px; margin:0 auto; padding:16px; }
+    .toolbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px; }
+    .toolbar select, .toolbar button, .toolbar input {
       padding:10px 14px; border-radius:7px; border:1px solid rgba(0,0,0,0.15); font-size:13px; font-family:inherit;
     }
     .toolbar button.primary { background:var(--green); color:var(--white); border:none; font-weight:700; cursor:pointer; }
+    .toolbar button.ghost { background:#fff; color:var(--green); border:1.5px solid var(--green); font-weight:700; cursor:pointer; }
+    .toolbar-group { display:flex; gap:8px; flex-wrap:wrap; }
 
-    table { width:100%; border-collapse:collapse; background:var(--white); border-radius:var(--radius); overflow:hidden; box-shadow:0 4px 16px rgba(0,0,0,0.05); }
-    th, td { padding:10px 12px; text-align:left; border-bottom:1px solid rgba(0,0,0,0.06); font-size:13px; vertical-align:middle; }
-    th { background:var(--green); color:var(--white); font-size:11px; text-transform:uppercase; letter-spacing:0.06em; }
+    .table-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+    table { width:100%; min-width:900px; border-collapse:collapse; background:var(--white); border-radius:var(--radius); overflow:hidden; box-shadow:0 4px 16px rgba(0,0,0,0.05); }
+    th, td { padding:10px 10px; text-align:left; border-bottom:1px solid rgba(0,0,0,0.06); font-size:13px; vertical-align:middle; }
+    th { background:var(--green); color:var(--white); font-size:11px; text-transform:uppercase; letter-spacing:0.06em; white-space:nowrap; }
     tr:hover td { background:rgba(231,213,231,0.18); }
-    td input[type="text"], td input[type="number"] {
+    td input[type="text"], td input[type="number"], td input[type="url"] {
       width:100%; padding:6px 8px; border:1px solid rgba(0,0,0,0.12); border-radius:5px; font-size:13px; font-family:inherit;
     }
-    td.precio { width:90px; }
+    td select { padding:6px 8px; border:1px solid rgba(0,0,0,0.12); border-radius:5px; font-size:13px; font-family:inherit; width:100%; }
+    td.precio { width:80px; }
+    td.orden-col { width:64px; }
+    td.check-col { width:60px; text-align:center; }
+    td.check-col input[type="checkbox"] { width:18px; height:18px; cursor:pointer; }
+
+    /* ── IMAGEN POR LINK + VISTA PREVIA ─────────────────────── */
+    td.imagen-col { min-width:190px; }
+    .img-field { display:flex; align-items:center; gap:8px; }
+    .img-preview {
+      width:40px; height:40px; border-radius:6px; object-fit:cover; flex-shrink:0;
+      background:var(--paper) center/cover no-repeat; border:1px solid rgba(0,0,0,0.1);
+    }
+    .img-preview.empty { display:flex; align-items:center; justify-content:center; font-size:9px; color:var(--muted); text-align:center; }
+    .img-hint { font-size:11px; color:var(--muted); margin-top:4px; line-height:1.3; }
+
     .toggle-disp {
       width:42px; height:24px; border-radius:999px; border:none; cursor:pointer; position:relative; transition:background 0.2s;
     }
@@ -59,21 +77,28 @@
     .row-actions button.save { background:var(--green); color:#fff; border:none; }
     .row-actions button.delete { background:#fdecea; color:#b00020; border:none; }
 
-    #status { position:fixed; bottom:18px; right:18px; background:var(--black); color:#fff; padding:10px 18px; border-radius:999px; font-size:13px; opacity:0; transition:opacity 0.3s; pointer-events:none; }
+    #status { position:fixed; bottom:18px; right:18px; left:18px; background:var(--black); color:#fff; padding:10px 18px; border-radius:999px; font-size:13px; opacity:0; transition:opacity 0.3s; pointer-events:none; text-align:center; z-index:200; }
     #status.show { opacity:1; }
 
     .new-row td { background:rgba(36,90,70,0.04); }
 
     /* ── TABS ─────────────────────────────────────────── */
-    .tabs { display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap; }
+    .tabs { display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
     .tab-btn {
-      padding:10px 18px; border-radius:999px; border:1.5px solid var(--green); background:#fff;
+      padding:9px 16px; border-radius:999px; border:1.5px solid var(--green); background:#fff;
       color:var(--green); font-weight:700; font-size:12px; letter-spacing:0.06em; text-transform:uppercase;
       cursor:pointer; transition:background 0.2s, color 0.2s;
     }
     .tab-btn.active { background:var(--green); color:#fff; }
     .tab-panel { display:none; }
     .tab-panel.active { display:block; }
+
+    .help-box { background:#fff7e6; border:1px solid #f0d999; color:#7a5a00; border-radius:8px; padding:10px 14px; font-size:12px; margin-bottom:14px; line-height:1.5; }
+
+    /* ── CATEGORIAS ───────────────────────────────────── */
+    .cat-card { background:var(--white); border-radius:var(--radius); padding:14px 16px; margin-bottom:10px; box-shadow:0 4px 16px rgba(0,0,0,0.05); display:grid; grid-template-columns:60px 1.4fr 1fr 1fr 1fr auto; gap:10px; align-items:center; }
+    .cat-card input { padding:8px 10px; border:1px solid rgba(0,0,0,0.12); border-radius:6px; font-size:13px; width:100%; font-family:inherit; }
+    .cat-card .cat-label { font-size:10px; text-transform:uppercase; letter-spacing:0.05em; color:var(--muted); display:block; margin-bottom:3px; }
 
     /* ── PEDIDOS ──────────────────────────────────────── */
     .order-card {
@@ -103,12 +128,45 @@
     .stats-summary { display:flex; gap:16px; margin-bottom:18px; flex-wrap:wrap; }
     .stat-box {
       background:var(--white); border-radius:var(--radius); padding:14px 20px; box-shadow:0 4px 16px rgba(0,0,0,0.05);
-      min-width:140px;
+      min-width:140px; flex:1;
     }
     .stat-box .num { font-size:24px; font-weight:700; color:var(--green); font-family:Georgia, serif; }
     .stat-box .label { font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--muted); }
     .stats-table th:nth-child(2), .stats-table td:nth-child(2),
     .stats-table th:nth-child(3), .stats-table td:nth-child(3) { text-align:right; }
+
+    /* ── RESPONSIVE MÓVIL ─────────────────────────────── */
+    @media (max-width: 760px) {
+      main { padding:12px; }
+      header h1 { font-size:14px; }
+      .tabs { gap:6px; }
+      .tab-btn { padding:8px 12px; font-size:11px; }
+
+      table.responsive thead { display:none; }
+      table.responsive, table.responsive tbody, table.responsive tr, table.responsive td {
+        display:block; width:100%; min-width:0;
+      }
+      table.responsive { box-shadow:none; background:transparent; }
+      table.responsive tr {
+        margin-bottom:14px; border:1px solid rgba(0,0,0,0.08); border-radius:10px; padding:10px 12px;
+        background:#fff; box-shadow:0 2px 10px rgba(0,0,0,0.05);
+      }
+      table.responsive td {
+        border-bottom:1px dashed rgba(0,0,0,0.06); padding:8px 2px; display:flex; align-items:center; gap:10px;
+      }
+      table.responsive td:last-child { border-bottom:none; }
+      table.responsive td::before {
+        content:attr(data-label); flex:0 0 92px; font-weight:700; font-size:10px; text-transform:uppercase;
+        letter-spacing:0.04em; color:var(--muted);
+      }
+      table.responsive td.row-actions { justify-content:flex-end; }
+      table.responsive td.row-actions::before { display:none; }
+
+      .cat-card { grid-template-columns:1fr; gap:8px; }
+      .cat-card .cat-actions { display:flex; justify-content:flex-end; }
+
+      .stat-box { min-width:120px; }
+    }
   </style>
 </head>
 <body>
@@ -129,36 +187,59 @@
   <main id="appMain">
     <div class="tabs">
       <button class="tab-btn active" data-tab="productos">Productos</button>
+      <button class="tab-btn" data-tab="categorias">Categorías</button>
       <button class="tab-btn" data-tab="pedidos">Pedidos</button>
       <button class="tab-btn" data-tab="stats">Estadísticas</button>
     </div>
 
     <!-- PRODUCTOS -->
     <div class="tab-panel active" id="tab-productos">
+      <div class="help-box">
+        📷 <strong>Imagen:</strong> pega el link directo a la foto (por ejemplo, subida a Imgur, Google Drive público, o cualquier hosting). Se recorta automáticamente a un cuadro, así que funciona mejor una foto <strong>cuadrada, de al menos 400×400px</strong>. Si el link no carga, el producto se muestra sin foto (no rompe el menú).
+      </div>
       <div class="toolbar">
         <select id="categoriaFilter">
           <option value="">Todas las categorías</option>
         </select>
-        <button class="primary" id="addRowBtn">+ Agregar producto</button>
+        <div class="toolbar-group">
+          <button class="ghost" id="seedBtn">Importar menú por defecto</button>
+          <button class="primary" id="addRowBtn">+ Agregar producto</button>
+        </div>
       </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Categoría</th>
-            <th>Descripción</th>
-            <th>Imagen (archivo)</th>
-            <th>S</th>
-            <th>M</th>
-            <th>L</th>
-            <th>U</th>
-            <th>Disponible</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody id="productsBody"></tbody>
-      </table>
+      <div class="table-scroll">
+        <table class="responsive">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Categoría</th>
+              <th>Descripción</th>
+              <th>Imagen (link)</th>
+              <th>Orden</th>
+              <th>S</th>
+              <th>M</th>
+              <th>L</th>
+              <th>U</th>
+              <th>★</th>
+              <th>Compl.</th>
+              <th>Disp.</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="productsBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CATEGORIAS -->
+    <div class="tab-panel" id="tab-categorias">
+      <div class="help-box">
+        Las categorías organizan el menú en secciones (Signature, Jugos, Café...). El <strong>orden</strong> define en qué posición aparecen en la página. El <strong>texto de complementos</strong> es el título de la sub-sección de adicionales dentro de esa categoría (ej. "Ingrediente extra"); déjalo vacío si la categoría no tiene adicionales.
+      </div>
+      <div class="toolbar">
+        <button class="primary" id="addCatBtn">+ Agregar categoría</button>
+      </div>
+      <div id="categoriesList"></div>
     </div>
 
     <!-- PEDIDOS -->
@@ -187,16 +268,18 @@
         </select>
       </div>
       <div class="stats-summary" id="statsSummary"></div>
-      <table class="stats-table">
-        <thead>
-          <tr>
-            <th>Producto</th>
-            <th>Unidades pedidas</th>
-            <th>Total generado</th>
-          </tr>
-        </thead>
-        <tbody id="statsBody"></tbody>
-      </table>
+      <div class="table-scroll">
+        <table class="stats-table">
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Unidades pedidas</th>
+              <th>Total generado</th>
+            </tr>
+          </thead>
+          <tbody id="statsBody"></tbody>
+        </table>
+      </div>
     </div>
   </main>
 
@@ -205,11 +288,12 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
     import {
-      getFirestore, collection, getDocs, doc, setDoc, deleteDoc, updateDoc, query, orderBy
+      getFirestore, collection, getDocs, doc, setDoc, deleteDoc, updateDoc, query, orderBy, writeBatch
     } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
     import {
       getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut
     } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+    import { DEFAULT_CATEGORIES, DEFAULT_PRODUCTS } from './menu-data.js';
 
     const firebaseConfig = {
       apiKey: "AIzaSyB8_J78K8i2Qr8tbdKSomnrTGWW5rxa6Qw",
@@ -233,7 +317,7 @@
     function showStatus(msg) {
       statusEl.textContent = msg;
       statusEl.classList.add('show');
-      setTimeout(() => statusEl.classList.remove('show'), 2000);
+      setTimeout(() => statusEl.classList.remove('show'), 2200);
     }
 
     /* ── LOGIN ─────────────────────────────────────────── */
@@ -273,6 +357,7 @@
         document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
         if (btn.dataset.tab === 'pedidos') loadOrders();
         if (btn.dataset.tab === 'stats') renderStats();
+        if (btn.dataset.tab === 'categorias') renderCategories();
       });
     });
 
@@ -289,16 +374,22 @@
 
       const filterSelect = document.getElementById('categoriaFilter');
       filterSelect.innerHTML = '<option value="">Todas las categorías</option>' +
-        categorias.map(c => `<option value="${c.id}">${c.nombre}</option>`).join('');
+        categorias.map(c => `<option value="${c.id}">${escapeHtml(c.nombre)}</option>`).join('');
 
       renderTable();
     }
 
     document.getElementById('categoriaFilter').addEventListener('change', renderTable);
 
+    function escapeHtml(str) {
+      return String(str ?? '').replace(/[&<>"']/g, c => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[c]));
+    }
+
     function categoriaOptions(selectedId) {
       return categorias.map(c =>
-        `<option value="${c.id}" ${c.id === selectedId ? 'selected' : ''}>${c.nombre}</option>`
+        `<option value="${c.id}" ${c.id === selectedId ? 'selected' : ''}>${escapeHtml(c.nombre)}</option>`
       ).join('');
     }
 
@@ -314,18 +405,27 @@
 
     function rowHtml(p) {
       const precios = p.precios || {};
+      const imagen = p.imagen || '';
       return `
-        <tr data-id="${p.id}">
-          <td><input type="text" class="f-nombre" value="${p.nombre || ''}" /></td>
-          <td><select class="f-categoria">${categoriaOptions(p.categoriaId)}</select></td>
-          <td><input type="text" class="f-descripcion" value="${p.descripcion || ''}" /></td>
-          <td><input type="text" class="f-imagen" value="${p.imagen || ''}" placeholder="nombre.jpg" /></td>
-          <td class="precio"><input type="number" class="f-S" value="${precios.S ?? ''}" /></td>
-          <td class="precio"><input type="number" class="f-M" value="${precios.M ?? ''}" /></td>
-          <td class="precio"><input type="number" class="f-L" value="${precios.L ?? ''}" /></td>
-          <td class="precio"><input type="number" class="f-U" value="${precios.U ?? ''}" /></td>
-          <td><button type="button" class="toggle-disp ${p.disponible ? 'on' : 'off'}" data-on="${p.disponible ? '1' : '0'}"></button></td>
-          <td class="row-actions">
+        <tr data-id="${p.id || ''}">
+          <td data-label="Nombre"><input type="text" class="f-nombre" value="${escapeHtml(p.nombre || '')}" /></td>
+          <td data-label="Categoría"><select class="f-categoria">${categoriaOptions(p.categoriaId)}</select></td>
+          <td data-label="Descripción"><input type="text" class="f-descripcion" value="${escapeHtml(p.descripcion || '')}" /></td>
+          <td data-label="Imagen (link)" class="imagen-col">
+            <div class="img-field">
+              <img class="img-preview${imagen ? '' : ' empty'}" src="${imagen ? escapeHtml(imagen) : ''}" onerror="this.classList.add('empty');this.removeAttribute('src');" alt="" />
+              <input type="url" class="f-imagen" value="${escapeHtml(imagen)}" placeholder="https://..." />
+            </div>
+          </td>
+          <td data-label="Orden" class="orden-col"><input type="number" class="f-orden" value="${p.orden ?? 999}" /></td>
+          <td data-label="S" class="precio"><input type="number" class="f-S" value="${precios.S ?? ''}" /></td>
+          <td data-label="M" class="precio"><input type="number" class="f-M" value="${precios.M ?? ''}" /></td>
+          <td data-label="L" class="precio"><input type="number" class="f-L" value="${precios.L ?? ''}" /></td>
+          <td data-label="U" class="precio"><input type="number" class="f-U" value="${precios.U ?? ''}" /></td>
+          <td data-label="Destacado ★" class="check-col"><input type="checkbox" class="f-destacado" ${p.destacado ? 'checked' : ''} /></td>
+          <td data-label="Es complemento" class="check-col"><input type="checkbox" class="f-complemento" ${p.esComplemento ? 'checked' : ''} /></td>
+          <td data-label="Disponible"><button type="button" class="toggle-disp ${p.disponible !== false ? 'on' : 'off'}" data-on="${p.disponible !== false ? '1' : '0'}"></button></td>
+          <td data-label="Acciones" class="row-actions">
             <button type="button" class="save">Guardar</button>
             <button type="button" class="delete">Eliminar</button>
           </td>
@@ -341,6 +441,19 @@
         toggleBtn.classList.toggle('off', isOn);
       });
 
+      const imgInput = tr.querySelector('.f-imagen');
+      const imgPreview = tr.querySelector('.img-preview');
+      imgInput.addEventListener('change', () => {
+        const url = imgInput.value.trim();
+        if (url) {
+          imgPreview.classList.remove('empty');
+          imgPreview.src = url;
+        } else {
+          imgPreview.removeAttribute('src');
+          imgPreview.classList.add('empty');
+        }
+      });
+
       tr.querySelector('.save').addEventListener('click', () => saveRow(tr));
       tr.querySelector('.delete').addEventListener('click', () => deleteRow(tr));
     }
@@ -351,17 +464,30 @@
       return isNaN(n) ? null : n;
     }
 
+    function slugify(text) {
+      return text.toString().toLowerCase().trim()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '') + '-' + Date.now().toString().slice(-5);
+    }
+
     async function saveRow(tr) {
       const id = tr.dataset.id;
       const nombre = tr.querySelector('.f-nombre').value.trim();
       const categoriaId = tr.querySelector('.f-categoria').value;
       const descripcion = tr.querySelector('.f-descripcion').value.trim();
       const imagen = tr.querySelector('.f-imagen').value.trim();
+      const orden = numOrNull(tr.querySelector('.f-orden').value) ?? 999;
       const S = numOrNull(tr.querySelector('.f-S').value);
       const M = numOrNull(tr.querySelector('.f-M').value);
       const L = numOrNull(tr.querySelector('.f-L').value);
       const U = numOrNull(tr.querySelector('.f-U').value);
+      const destacado = tr.querySelector('.f-destacado').checked;
+      const esComplemento = tr.querySelector('.f-complemento').checked;
       const disponible = tr.querySelector('.toggle-disp').dataset.on === '1';
+
+      if (!nombre) { showStatus('El nombre es obligatorio'); return; }
+      if (!categoriaId) { showStatus('Elige una categoría'); return; }
 
       const precios = {};
       if (S !== null) precios.S = S;
@@ -369,13 +495,7 @@
       if (L !== null) precios.L = L;
       if (U !== null) precios.U = U;
 
-      const existing = productos.find(p => p.id === id) || {};
-      const data = {
-        nombre, categoriaId, descripcion, imagen, precios, disponible,
-        orden: existing.orden ?? 999,
-        destacado: existing.destacado ?? false,
-        esComplemento: existing.esComplemento ?? false
-      };
+      const data = { nombre, categoriaId, descripcion, imagen, precios, disponible, orden, destacado, esComplemento };
 
       try {
         await setDoc(doc(db, 'productos', id || slugify(nombre)), data);
@@ -389,6 +509,7 @@
 
     async function deleteRow(tr) {
       const id = tr.dataset.id;
+      if (!id) { tr.remove(); return; }
       if (!confirm('¿Eliminar este producto?')) return;
       try {
         await deleteDoc(doc(db, 'productos', id));
@@ -400,23 +521,128 @@
       }
     }
 
-    function slugify(text) {
-      return text.toString().toLowerCase().trim()
-        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/(^-|-$)/g, '') + '-' + Date.now().toString().slice(-5);
-    }
-
     document.getElementById('addRowBtn').addEventListener('click', () => {
       const tbody = document.getElementById('productsBody');
       const newProd = {
         id: '', nombre: 'Nuevo producto', categoriaId: categorias[0]?.id || '',
-        descripcion: '', imagen: '', precios: {}, disponible: true
+        descripcion: '', imagen: '', precios: {}, disponible: true, orden: 999
       };
       tbody.insertAdjacentHTML('afterbegin', rowHtml(newProd));
       const tr = tbody.querySelector('tr');
       tr.classList.add('new-row');
       bindRow(tr);
+      tr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+
+    /* ── IMPORTAR MENÚ POR DEFECTO ───────────────────────── */
+    document.getElementById('seedBtn').addEventListener('click', async () => {
+      if (categorias.length > 0 || productos.length > 0) {
+        if (!confirm('Ya hay categorías o productos guardados. ¿Importar de todos modos? (no borra lo existente, solo agrega lo que falte)')) return;
+      } else {
+        if (!confirm('Esto creará todas las categorías y productos del menú original de Boyate en la base de datos. ¿Continuar?')) return;
+      }
+      try {
+        const batch = writeBatch(db);
+        DEFAULT_CATEGORIES.forEach(cat => {
+          const { id, ...rest } = cat;
+          batch.set(doc(db, 'categorias', id), rest, { merge: true });
+        });
+        DEFAULT_PRODUCTS.forEach(p => {
+          const id = slugify(p.nombre);
+          batch.set(doc(db, 'productos', id), p, { merge: true });
+        });
+        await batch.commit();
+        showStatus('Menú importado ✓');
+        await loadAll();
+      } catch (e) {
+        showStatus('Error al importar');
+        console.error(e);
+      }
+    });
+
+    /* ── CATEGORIAS ────────────────────────────────────── */
+    function renderCategories() {
+      const list = document.getElementById('categoriesList');
+      if (categorias.length === 0) {
+        list.innerHTML = '<p style="color:var(--muted)">No hay categorías todavía. Agrega una o usa "Importar menú por defecto" en la pestaña Productos.</p>';
+        return;
+      }
+      list.innerHTML = categorias.slice().sort((a, b) => (a.orden ?? 999) - (b.orden ?? 999)).map(c => catCardHtml(c)).join('');
+      list.querySelectorAll('.cat-card').forEach(bindCatCard);
+    }
+
+    function catCardHtml(c) {
+      return `
+        <div class="cat-card" data-id="${c.id}">
+          <div><span class="cat-label">Orden</span><input type="number" class="c-orden" value="${c.orden ?? 999}" /></div>
+          <div><span class="cat-label">Nombre</span><input type="text" class="c-nombre" value="${escapeHtml(c.nombre || '')}" /></div>
+          <div><span class="cat-label">Nota (ej. "Extra +$2.000")</span><input type="text" class="c-nota" value="${escapeHtml(c.notaExtra || '')}" /></div>
+          <div><span class="cat-label">Descripción (opcional)</span><input type="text" class="c-descripcion" value="${escapeHtml(c.descripcion || '')}" /></div>
+          <div><span class="cat-label">Título de complementos</span><input type="text" class="c-complemento" value="${escapeHtml(c.complementoLabel || '')}" placeholder="Ej: Adicionales" /></div>
+          <div class="cat-actions row-actions">
+            <button type="button" class="save">Guardar</button>
+            <button type="button" class="delete">Eliminar</button>
+          </div>
+        </div>`;
+    }
+
+    function bindCatCard(card) {
+      card.querySelector('.save').addEventListener('click', () => saveCategory(card));
+      card.querySelector('.delete').addEventListener('click', () => deleteCategory(card));
+    }
+
+    async function saveCategory(card) {
+      const id = card.dataset.id;
+      const nombre = card.querySelector('.c-nombre').value.trim();
+      const orden = numOrNull(card.querySelector('.c-orden').value) ?? 999;
+      const notaExtra = card.querySelector('.c-nota').value.trim();
+      const descripcion = card.querySelector('.c-descripcion').value.trim();
+      const complementoLabel = card.querySelector('.c-complemento').value.trim();
+
+      if (!nombre) { showStatus('El nombre es obligatorio'); return; }
+
+      const data = { nombre, orden };
+      if (notaExtra) data.notaExtra = notaExtra;
+      if (descripcion) data.descripcion = descripcion;
+      if (complementoLabel) data.complementoLabel = complementoLabel;
+
+      try {
+        await setDoc(doc(db, 'categorias', id || slugify(nombre)), data, { merge: true });
+        showStatus('Categoría guardada ✓');
+        await loadAll();
+        renderCategories();
+      } catch (e) {
+        showStatus('Error al guardar categoría');
+        console.error(e);
+      }
+    }
+
+    async function deleteCategory(card) {
+      const id = card.dataset.id;
+      const enUso = productos.some(p => p.categoriaId === id);
+      if (enUso) {
+        alert('No puedes eliminar esta categoría: todavía tiene productos asignados. Muévelos o elimínalos primero.');
+        return;
+      }
+      if (!confirm('¿Eliminar esta categoría?')) return;
+      try {
+        await deleteDoc(doc(db, 'categorias', id));
+        showStatus('Categoría eliminada');
+        await loadAll();
+        renderCategories();
+      } catch (e) {
+        showStatus('Error al eliminar');
+        console.error(e);
+      }
+    }
+
+    document.getElementById('addCatBtn').addEventListener('click', () => {
+      const list = document.getElementById('categoriesList');
+      const newCat = { id: '', nombre: 'Nueva categoría', orden: (categorias.length + 1) };
+      list.insertAdjacentHTML('afterbegin', catCardHtml(newCat));
+      const card = list.querySelector('.cat-card');
+      bindCatCard(card);
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
 
     /* ── PEDIDOS ───────────────────────────────────────── */
@@ -482,22 +708,22 @@
       const status = p.status || 'pendiente';
       const itemsHtml = (p.items || []).map(it => {
         const sizeLabel = (it.size === 'U' || !it.size) ? '' : ` (${it.size})`;
-        return `<li>${it.name}${sizeLabel} x${it.qty} — ${fmtPrice(it.subtotal)}</li>`;
+        return `<li>${escapeHtml(it.name)}${sizeLabel} x${it.qty} — ${fmtPrice(it.subtotal)}</li>`;
       }).join('');
 
       let extra = '';
       if (p.serviceType === 'Domicilio') {
         const dir = [p.address, p.apartment].filter(Boolean).join(' - ');
-        if (dir) extra += `📍 ${dir}<br>`;
+        if (dir) extra += `📍 ${escapeHtml(dir)}<br>`;
       }
-      if (p.orderTime) extra += `🕐 Hora deseada: ${p.orderTime}<br>`;
-      if (p.notes) extra += `📝 ${p.notes}`;
+      if (p.orderTime) extra += `🕐 Hora deseada: ${escapeHtml(p.orderTime)}<br>`;
+      if (p.notes) extra += `📝 ${escapeHtml(p.notes)}`;
 
       return `
         <div class="order-card ${status}">
           <div class="order-head">
             <div>
-              <h3>${p.customerName || 'Cliente'} — ${p.serviceType || ''}</h3>
+              <h3>${escapeHtml(p.customerName || 'Cliente')} — ${escapeHtml(p.serviceType || '')}</h3>
               <div class="order-meta">${fmtDate(p.createdAt)}</div>
             </div>
             <div style="text-align:right">
@@ -562,7 +788,7 @@
         .sort((a, b) => b[1].qty - a[1].qty)
         .map(([name, data]) => `
           <tr>
-            <td>${name}</td>
+            <td>${escapeHtml(name)}</td>
             <td>${data.qty}</td>
             <td>${fmtPrice(data.total)}</td>
           </tr>`)
