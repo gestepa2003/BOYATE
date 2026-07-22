@@ -2,14 +2,13 @@
 <html lang="es">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#fbfaf7" />
     <style>
       html, body { width: 100%; max-width: 100%; overflow-x: hidden !important; }
     </style>
     <title>Boyate Smoothies &amp; Cafe</title>
     <meta name="description" content="Boyate Smoothies & Cafe. Jugos naturales, smoothies, tazones, sandwiches y cafe de especialidad en Castilla Real." />
-    <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="./assets/favicon.svg?v=2" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -28,7 +27,7 @@
         <a href="#ubicacion">Ubicación</a>
         <a href="#pedidos">Pedidos</a>
       </nav>
-      <a class="header-action" href="https://wa.me/573133056850" target="_blank" rel="noreferrer">
+      <a class="header-action" href="https://wa.me/573133056850" target="_blank" rel="noopener noreferrer">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         WhatsApp
       </a>
@@ -36,6 +35,43 @@
         <span></span><span></span><span></span>
       </button>
     </header>
+
+    <script>
+      // Force header fixed and ensure body has correct top padding even if CSS is cached.
+      (function(){
+        function applyFixedHeader(){
+          const hdr = document.querySelector('.site-header');
+          if(!hdr) return;
+          hdr.style.position = 'fixed';
+          hdr.style.top = '0';
+          hdr.style.left = '0';
+          hdr.style.right = '0';
+          hdr.style.zIndex = '99999';
+          hdr.style.background = hdr.style.background || 'rgba(251,250,247,0.98)';
+          hdr.style.backdropFilter = hdr.style.backdropFilter || 'blur(12px)';
+          hdr.style.boxShadow = hdr.style.boxShadow || '0 2px 8px rgba(0,0,0,0.06)';
+
+          // Ensure the nav links are visible on mobile too
+          const nav = hdr.querySelector('.nav');
+          if (nav) {
+            nav.style.display = 'flex';
+            nav.style.justifyContent = 'center';
+            nav.style.gap = '20px';
+          }
+
+          // compute height and apply to body padding
+          const h = hdr.offsetHeight || 72;
+          document.documentElement.style.setProperty('--header-height', h + 'px');
+          document.body.style.paddingTop = h + 'px';
+        }
+        window.addEventListener('load', applyFixedHeader);
+        window.addEventListener('resize', applyFixedHeader);
+        window.addEventListener('orientationchange', applyFixedHeader);
+        document.addEventListener('DOMContentLoaded', applyFixedHeader);
+        // Also reapply after a short delay in case fonts/images cause layout shift
+        setTimeout(applyFixedHeader, 600);
+      })();
+    </script>
 
     <!-- MOBILE NAV DRAWER -->
     <div class="nav-drawer" id="navDrawer" aria-hidden="true">
@@ -52,7 +88,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
           Pedidos
         </a>
-        <a href="https://wa.me/573133056850" target="_blank" rel="noreferrer" class="drawer-link drawer-wa">
+        <a href="https://wa.me/573133056850" target="_blank" rel="noopener noreferrer" class="drawer-link drawer-wa">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
           WhatsApp
         </a>
@@ -71,7 +107,7 @@
           <p class="intro reveal reveal-delay-3">Jugos naturales, smoothies de poder, tazones, sandwiches y café de especialidad para domicilio o recogida.</p>
           <div class="hero-actions reveal reveal-delay-4">
             <a class="button primary" href="#menu">Ver menú</a>
-            <a class="button secondary" href="https://wa.me/573133056850?text=Hola%20Boyate%2C%20quiero%20hacer%20un%20pedido" target="_blank" rel="noreferrer">Pedir ahora</a>
+            <a class="button secondary" href="https://wa.me/573133056850?text=Hola%20Boyate%2C%20quiero%20hacer%20un%20pedido" target="_blank" rel="noopener noreferrer">Pedir ahora</a>
           </div>
         </div>
         <div class="hero-visual reveal reveal-delay-2" aria-label="Jugo más pedido">
@@ -544,8 +580,8 @@
           <h2>Visítanos o pide para recoger</h2>
           <p>Cl. 10 #79-15 Castilla Real. Servicio disponible para domicilio y recogida.</p>
           <div class="location-actions">
-            <a class="button primary" href="https://www.google.com/maps/search/?api=1&query=Cl.%2010%20%2379-15%20Castilla%20Real" target="_blank" rel="noreferrer">Google Maps</a>
-            <a class="button secondary" href="https://waze.com/ul?q=Cl.%2010%20%2379-15%20Castilla%20Real&navigate=yes" target="_blank" rel="noreferrer">Waze</a>
+            <a class="button primary" href="https://www.google.com/maps/search/?api=1&query=Cl.%2010%20%2379-15%20Castilla%20Real" target="_blank" rel="noopener noreferrer">Google Maps</a>
+            <a class="button secondary" href="https://waze.com/ul?q=Cl.%2010%20%2379-15%20Castilla%20Real&navigate=yes" target="_blank" rel="noopener noreferrer">Waze</a>
             <a class="button pickup" href="#pedidos">Pedir para recoger</a>
           </div>
         </div>
@@ -609,7 +645,7 @@
 /* ── FIREBASE ───────────────────────────────────────────── */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
 import {
-  getFirestore, collection, addDoc, getDocs, query, where, serverTimestamp
+  getFirestore, collection, addDoc, getDocs, query, where, serverTimestamp, orderBy
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -622,6 +658,89 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
+
+// Cargar menú dinámicamente desde Firestore (si hay datos en la colección 'productos' y 'categorias')
+async function loadMenuFromFirestore() {
+  try {
+    const catsSnap = await getDocs(query(collection(db, 'categorias'), orderBy('orden')));
+    const categorias = catsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+    const prodsSnap = await getDocs(query(collection(db, 'productos'), orderBy('orden')));
+    const productos = prodsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+    const board = document.querySelector('.menu-board');
+    if (!board) return;
+
+    // Limpia el board y renderiza por categorías
+    board.innerHTML = '';
+
+    for (const cat of categorias) {
+      const catProds = productos.filter(p => p.categoriaId === cat.id);
+      if (!catProds.length) continue;
+
+      const article = document.createElement('article');
+      article.className = 'menu-category wide';
+      article.dataset.cat = cat.id;
+
+      const heading = document.createElement('div');
+      heading.className = 'category-title';
+      heading.innerHTML = `<h3>${cat.nombre || ''}</h3>`;
+
+      const grid = document.createElement('div');
+      grid.className = 'menu-grid';
+
+      article.appendChild(heading);
+      article.appendChild(grid);
+
+      // Productos de esta categoría
+      catProds.forEach(p => {
+        const precios = p.precios || {};
+        // Soporta imagen completa (url) o nombre de archivo local
+        const imgSrc = p.imagen && String(p.imagen).startsWith('http') ? p.imagen : (p.imagen ? './assets/' + p.imagen : './assets/placeholder.jpg');
+
+        const selectOptions = Object.keys(precios).length ?
+          Object.entries(precios).map(([k, v]) => `<option value="${k}">${k} — $${Number(v).toLocaleString('es-CO')}</option>`).join('') :
+          '<option value="U">Unidad</option>';
+
+        const item = document.createElement('div');
+        item.className = 'menu-item' + (p.destacado ? ' featured' : '');
+        item.dataset.name = p.nombre || '';
+        item.dataset.prices = JSON.stringify(precios);
+
+        item.innerHTML = `
+          <div class="menu-item-header">
+            <img class="menu-img" src="${imgSrc}" alt="${p.nombre || ''}" loading="lazy" />
+            <div class="menu-item-text"><h4>${p.nombre || ''}</h4><p>${p.descripcion || ''}</p></div>
+          </div>
+          <div class="order-controls">
+            <select class="size-select" aria-label="Talla">${selectOptions}</select>
+            <div class="quantity-stepper" role="group" aria-label="Cantidad">
+              <button type="button" class="qty-minus" aria-label="Restar">−</button>
+              <span class="quantity-value" aria-live="polite">0</span>
+              <button type="button" class="qty-plus" aria-label="Sumar">+</button>
+            </div>
+          </div>
+        `;
+
+        grid.appendChild(item);
+      });
+
+      // Opcional: pie de precios según la categoría
+      const pricesNote = document.createElement('p');
+      pricesNote.className = 'prices';
+      pricesNote.textContent = cat.preciosNota || '';
+      article.appendChild(pricesNote);
+
+      board.appendChild(article);
+    }
+
+  } catch (err) {
+    console.error('Error loading menu from Firestore:', err);
+  }
+}
+
+// Llamada temprana: usar top-level await para asegurarnos de renderizar antes de bindear controles
+try { await loadMenuFromFirestore(); } catch (e) { /* ignora si falla */ }
 
 /* ── MENÚ MÓVIL ─────────────────────────────────────────── */
 const menuToggle = document.getElementById('menuToggle');
@@ -845,5 +964,43 @@ form.addEventListener('submit', async e => {
 });
 </script>
 
-  </body>
+  <!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+</body>
 </html>
