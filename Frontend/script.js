@@ -137,6 +137,7 @@
 
     if (!minusBtn || !plusBtn || !valueEl) return;
 
+    var isAvailable = menuItem.dataset.available !== 'false';
     var qty = 0;
 
     function currentSize() {
@@ -153,7 +154,14 @@
       setCartItem(name, currentSize(), currentPrice(), qty);
     }
 
-    plusBtn.addEventListener('click', function() { qty++; update(); });
+    plusBtn.addEventListener('click', function() {
+      if (!isAvailable) {
+        alert('Este producto no está disponible en este momento.');
+        return;
+      }
+      qty++;
+      update();
+    });
     minusBtn.addEventListener('click', function() { if (qty > 0) { qty--; update(); } });
     if (sizeSelect) {
       sizeSelect.addEventListener('change', function() { if (qty > 0) update(); });

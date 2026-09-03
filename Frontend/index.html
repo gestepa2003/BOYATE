@@ -149,7 +149,7 @@
           <!-- SIGNATURE -->
           <article class="menu-category wide" data-cat="signature">
             <div class="category-title">
-              <h3>Signature</h3>
+              <h3>Signature (Preparados con leche estándar)</h3>
             </div>
             <div class="menu-grid">
               <div class="menu-item" data-name="Banana-Boom" data-prices='{"S":9000,"M":11900,"L":13500}'>
@@ -659,6 +659,14 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
 
+function normalizeCategoryName(name) {
+  const value = String(name ?? '').trim();
+  if (!value) return '';
+  return /^signature$/i.test(value)
+    ? 'Signature (Preparados con leche estándar)'
+    : value;
+}
+
 // Cargar menú dinámicamente desde Firestore (si hay datos en la colección 'productos' y 'categorias')
 async function loadMenuFromFirestore() {
   try {
@@ -684,7 +692,7 @@ async function loadMenuFromFirestore() {
 
       const heading = document.createElement('div');
       heading.className = 'category-title';
-      heading.innerHTML = `<h3>${cat.nombre || ''}</h3>`;
+      heading.innerHTML = `<h3>${normalizeCategoryName(cat.nombre)}</h3>`;
 
       const grid = document.createElement('div');
       grid.className = 'menu-grid';
@@ -703,14 +711,16 @@ async function loadMenuFromFirestore() {
           '<option value="U">Unidad</option>';
 
         const item = document.createElement('div');
-        item.className = 'menu-item' + (p.destacado ? ' featured' : '');
+        const isAvailable = p.disponible !== false;
+        item.className = 'menu-item' + (p.destacado ? ' featured' : '') + (!isAvailable ? ' unavailable' : '');
         item.dataset.name = p.nombre || '';
         item.dataset.prices = JSON.stringify(precios);
+        item.dataset.available = isAvailable ? 'true' : 'false';
 
         item.innerHTML = `
           <div class="menu-item-header">
             <img class="menu-img" src="${imgSrc}" alt="${p.nombre || ''}" loading="lazy" />
-            <div class="menu-item-text"><h4>${p.nombre || ''}</h4><p>${p.descripcion || ''}</p></div>
+            <div class="menu-item-text"><h4>${p.nombre || ''}${!isAvailable ? ' <span class="availability-label">NO DISPONIBLE</span>' : ''}</h4><p>${p.descripcion || ''}</p></div>
           </div>
           <div class="order-controls">
             <select class="size-select" aria-label="Talla">${selectOptions}</select>
@@ -832,6 +842,7 @@ const allMenuItems = document.querySelectorAll('.menu-item[data-name]');
 
 function bindItemControls(menuItem) {
   const name      = menuItem.dataset.name;
+  const isAvailable = menuItem.dataset.available !== 'false';
   const prices    = JSON.parse(menuItem.dataset.prices || '{}');
   const minusBtn  = menuItem.querySelector('.qty-minus');
   const plusBtn   = menuItem.querySelector('.qty-plus');
@@ -844,8 +855,21 @@ function bindItemControls(menuItem) {
   const currentPrice = () => prices[currentSize()] || Object.values(prices)[0] || 0;
   function update() { valueEl.textContent = qty; setCartItem(name, currentSize(), currentPrice(), qty); }
 
-  plusBtn.addEventListener('click',  () => { qty++; update(); });
-  minusBtn.addEventListener('click', () => { if (qty > 0) { qty--; update(); } });
+  plusBtn.addEventListener('click',  () => {
+    if (!isAvailable) {
+      alert('Este producto no está disponible en este momento.');
+      return;
+    }
+    qty++;
+    update();
+  });
+  minusBtn.addEventListener('click', () => {
+    if (!isAvailable) {
+      alert('Este producto no está disponible en este momento.');
+      return;
+    }
+    if (qty > 0) { qty--; update(); }
+  });
   if (sizeSelect) sizeSelect.addEventListener('change', () => { if (qty > 0) update(); });
   menuItem._resetQty = () => { qty = 0; valueEl.textContent = '0'; };
 }

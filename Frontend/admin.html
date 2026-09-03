@@ -51,21 +51,38 @@
     #loginScreen button { width:100%; padding:12px; background:var(--green); color:var(--white); border:none; border-radius:7px; font-weight:700; cursor:pointer; font-size:14px; }
     #loginError { color:#b00020; font-size:13px; margin-top:8px; min-height:18px; }
 
-    main { display:none; max-width:1100px; margin:0 auto; padding:24px; }
+    main { display:none; max-width:1280px; margin:0 auto; padding:24px; }
     .toolbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; flex-wrap:wrap; gap:10px; }
     .toolbar select, .toolbar button {
       padding:10px 14px; border-radius:7px; border:1px solid rgba(0,0,0,0.15); font-size:13px; font-family:inherit;
     }
     .toolbar button.primary { background:var(--green); color:var(--white); border:none; font-weight:700; cursor:pointer; }
 
-    table { width:100%; border-collapse:collapse; background:var(--white); border-radius:var(--radius); overflow:hidden; box-shadow:0 4px 16px rgba(0,0,0,0.05); }
-    th, td { padding:10px 12px; text-align:left; border-bottom:1px solid rgba(0,0,0,0.06); font-size:13px; vertical-align:middle; }
+    table {
+      width:100%; min-width:1180px; table-layout:fixed; border-collapse:separate; border-spacing:0;
+      background:var(--white); border-radius:var(--radius); overflow:hidden; box-shadow:0 4px 16px rgba(0,0,0,0.05);
+      border:1px solid rgba(0,0,0,0.08);
+    }
+    th, td { padding:10px 10px; text-align:center; border-bottom:1px solid rgba(0,0,0,0.06); font-size:13px; vertical-align:middle; }
     th { background:var(--green); color:var(--white); font-size:11px; text-transform:uppercase; letter-spacing:0.06em; }
     tr:hover td { background:rgba(231,213,231,0.18); }
-    td input[type="text"], td input[type="number"] {
-      width:100%; padding:6px 8px; border:1px solid rgba(0,0,0,0.12); border-radius:5px; font-size:13px; font-family:inherit;
+    td input[type="text"], td input[type="number"], td select {
+      width:100%; min-width:74px; height:38px; padding:6px 8px; border:1px solid rgba(0,0,0,0.12); border-radius:6px; font-size:13px; font-family:inherit; background:#fff; text-align:center;
     }
-    td.precio { width:90px; }
+    td input[type="text"].f-nombre, td input[type="text"].f-descripcion, td input[type="text"].f-imagen,
+    td select.f-categoria {
+      text-align:left;
+    }
+    td.precio { width:110px; min-width:110px; }
+    th:nth-child(5), th:nth-child(6), th:nth-child(7), th:nth-child(8),
+    td.precio {
+      width:110px;
+      min-width:110px;
+    }
+    .toggle-disp {
+      margin:0 auto;
+      display:block;
+    }
     .toggle-disp {
       width:42px; height:24px; border-radius:999px; border:none; cursor:pointer; position:relative; transition:background 0.2s;
     }
@@ -97,6 +114,7 @@
     .tab-btn.active { background:var(--green); color:#fff; }
     .tab-panel { display:none; }
     .tab-panel.active { display:block; }
+    #tab-productos { overflow-x:auto; }
 
     /* ── PEDIDOS ──────────────────────────────────────── */
     .order-card {
@@ -303,6 +321,39 @@
     let categorias = [];
     let productos = [];
 
+    function categoryDisplayName(name) {
+      const value = String(name ?? '').trim();
+      if (!value) return '';
+      return /^signature$/i.test(value)
+        ? 'Signature (Preparados con leche estándar)'
+        : value;
+    }
+
+    function normalizePriceMap(product) {
+      const raw = product && (product.precios || product.prices || {});
+      const values = {};
+      const keys = ['S', 'M', 'L', 'U'];
+
+      keys.forEach(key => {
+        const direct = raw?.[key];
+        const lower = raw?.[key.toLowerCase()];
+        const flat = product?.[key];
+        const flatLower = product?.[key.toLowerCase()];
+        const flatName = product?.[`precio${key}`] ?? product?.[`precio_${key}`];
+        const value = direct ?? lower ?? flat ?? flatLower ?? flatName;
+        if (value !== undefined && value !== null && value !== '') values[key] = Number(value);
+      });
+
+      if (Object.keys(values).length === 0) {
+        keys.forEach(key => {
+          const alt = product?.[key.toLowerCase()] ?? product?.[`precio${key.toLowerCase()}`] ?? product?.[`precio_${key.toLowerCase()}`];
+          if (alt !== undefined && alt !== null && alt !== '') values[key] = Number(alt);
+        });
+      }
+
+      return values;
+    }
+
     async function loadAll() {
       const catsSnap = await getDocs(query(collection(db, 'categorias'), orderBy('orden')));
       categorias = catsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
@@ -312,7 +363,7 @@
 
       const filterSelect = document.getElementById('categoriaFilter');
       filterSelect.innerHTML = '<option value="">Todas las categorías</option>' +
-        categorias.map(c => `<option value="${c.id}">${c.nombre}</option>`).join('');
+        categorias.map(c => `<option value="${c.id}">${categoryDisplayName(c.nombre)}</option>`).join('');
 
       renderTable();
     }
@@ -321,7 +372,7 @@
 
     function categoriaOptions(selectedId) {
       return categorias.map(c =>
-        `<option value="${c.id}" ${c.id === selectedId ? 'selected' : ''}>${c.nombre}</option>`
+        `<option value="${c.id}" ${c.id === selectedId ? 'selected' : ''}>${categoryDisplayName(c.nombre)}</option>`
       ).join('');
     }
 
@@ -336,7 +387,7 @@
     }
 
     function rowHtml(p) {
-      const precios = p.precios || {};
+      const precios = normalizePriceMap(p);
       return `
         <tr data-id="${p.id}">
           <td><input type="text" class="f-nombre" value="${p.nombre || ''}" /></td>
@@ -796,6 +847,39 @@
     let categorias = [];
     let productos = [];
 
+    function categoryDisplayName(name) {
+      const value = String(name ?? '').trim();
+      if (!value) return '';
+      return /^signature$/i.test(value)
+        ? 'Signature (Preparados con leche estándar)'
+        : value;
+    }
+
+    function normalizePriceMap(product) {
+      const raw = product && (product.precios || product.prices || {});
+      const values = {};
+      const keys = ['S', 'M', 'L', 'U'];
+
+      keys.forEach(key => {
+        const direct = raw?.[key];
+        const lower = raw?.[key.toLowerCase()];
+        const flat = product?.[key];
+        const flatLower = product?.[key.toLowerCase()];
+        const flatName = product?.[`precio${key}`] ?? product?.[`precio_${key}`];
+        const value = direct ?? lower ?? flat ?? flatLower ?? flatName;
+        if (value !== undefined && value !== null && value !== '') values[key] = Number(value);
+      });
+
+      if (Object.keys(values).length === 0) {
+        keys.forEach(key => {
+          const alt = product?.[key.toLowerCase()] ?? product?.[`precio${key.toLowerCase()}`] ?? product?.[`precio_${key.toLowerCase()}`];
+          if (alt !== undefined && alt !== null && alt !== '') values[key] = Number(alt);
+        });
+      }
+
+      return values;
+    }
+
     async function loadAll() {
       const catsSnap = await getDocs(query(collection(db, 'categorias'), orderBy('orden')));
       categorias = catsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
@@ -805,7 +889,7 @@
 
       const filterSelect = document.getElementById('categoriaFilter');
       filterSelect.innerHTML = '<option value="">Todas las categorías</option>' +
-        categorias.map(c => `<option value="${c.id}">${c.nombre}</option>`).join('');
+        categorias.map(c => `<option value="${c.id}">${categoryDisplayName(c.nombre)}</option>`).join('');
 
       renderTable();
     }
@@ -814,7 +898,7 @@
 
     function categoriaOptions(selectedId) {
       return categorias.map(c =>
-        `<option value="${c.id}" ${c.id === selectedId ? 'selected' : ''}>${c.nombre}</option>`
+        `<option value="${c.id}" ${c.id === selectedId ? 'selected' : ''}>${categoryDisplayName(c.nombre)}</option>`
       ).join('');
     }
 
@@ -829,7 +913,7 @@
     }
 
     function rowHtml(p) {
-      const precios = p.precios || {};
+      const precios = normalizePriceMap(p);
       return `
         <tr data-id="${p.id}">
           <td><input type="text" class="f-nombre" value="${p.nombre || ''}" /></td>

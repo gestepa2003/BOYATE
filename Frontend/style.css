@@ -348,6 +348,8 @@ h1 { margin-bottom:40px; font-family:'Playfair Display',Georgia,serif; font-size
 .menu-img { width:64px; height:64px; object-fit:cover; object-position:center; border-radius:8px; flex-shrink:0; transition:transform 0.4s ease,box-shadow 0.4s ease; }
 .menu-item:hover .menu-img { transform:scale(1.06); box-shadow:0 4px 12px rgba(0,0,0,0.14); }
 .menu-item-text h4 { margin:0 0 3px; color:var(--green); font-size:12px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; }
+.availability-label { color:#b00020; font-size:10px; font-weight:700; letter-spacing:0.08em; white-space:nowrap; }
+.menu-item.unavailable .quantity-stepper { opacity:0.65; }
 .menu-item-text p { margin:0; color:#5a5450; font-size:13px; line-height:1.4; }
 
 /* precio inline */
@@ -959,4 +961,3 @@ body { padding-top: var(--header-height) !important; }
     height: 16px;
   }
 }
-
