@@ -370,6 +370,8 @@ h1 { margin-bottom:40px; font-family:'Playfair Display',Georgia,serif; font-size
 /* ─── ADICIONALES SUB ─────────────────────────────────────── */
 .adicionales-sub { margin-top:20px; padding-top:16px; border-top:1px dashed rgba(36,90,70,0.25); }
 .adicionales-titulo { margin:0 0 12px; color:var(--green); font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; }
+.toppings-extra-box { padding:18px; border:1px solid rgba(36,90,70,0.18); border-radius:10px; background:var(--green-soft); }
+.toppings-extra-box .adicionales-titulo { font-size:13px; letter-spacing:0.12em; }
 .adicionales-sub .menu-item-text h4 em { font-style:italic; font-weight:400; color:var(--muted); font-size:11px; margin-left:4px; text-transform:none; }
 
 /* ─── DISPARO DE ENERGÍA ──────────────────────────────────── */

@@ -65,6 +65,8 @@
     td input[type="text"], td input[type="number"] {
       width:100%; padding:6px 8px; border:1px solid rgba(0,0,0,0.12); border-radius:5px; font-size:13px; font-family:inherit;
     }
+    .extra-toggle { display:flex; align-items:center; gap:6px; white-space:nowrap; font-size:11px; color:var(--green); font-weight:700; }
+    .extra-toggle input { accent-color:var(--green); }
     td.precio { width:90px; }
     .toggle-disp {
       width:42px; height:24px; border-radius:999px; border:none; cursor:pointer; position:relative; transition:background 0.2s;
@@ -172,6 +174,7 @@
             <th>Categoría</th>
             <th>Descripción</th>
             <th>Imagen (archivo)</th>
+            <th>Tipo</th>
             <th>S</th>
             <th>M</th>
             <th>L</th>
@@ -343,6 +346,7 @@
           <td><select class="f-categoria">${categoriaOptions(p.categoriaId)}</select></td>
           <td><input type="text" class="f-descripcion" value="${p.descripcion || ''}" /></td>
           <td><input type="text" class="f-imagen" value="${p.imagen || ''}" placeholder="nombre.jpg" /></td>
+          <td><label class="extra-toggle"><input type="checkbox" class="f-extra" ${p.esComplemento ? 'checked' : ''} /> Topping extra</label></td>
           <td class="precio"><input type="number" class="f-S" value="${precios.S ?? ''}" /></td>
           <td class="precio"><input type="number" class="f-M" value="${precios.M ?? ''}" /></td>
           <td class="precio"><input type="number" class="f-L" value="${precios.L ?? ''}" /></td>
@@ -380,6 +384,7 @@
       const categoriaId = tr.querySelector('.f-categoria').value;
       const descripcion = tr.querySelector('.f-descripcion').value.trim();
       const imagen = tr.querySelector('.f-imagen').value.trim();
+      const esComplemento = tr.querySelector('.f-extra').checked;
       const S = numOrNull(tr.querySelector('.f-S').value);
       const M = numOrNull(tr.querySelector('.f-M').value);
       const L = numOrNull(tr.querySelector('.f-L').value);
@@ -397,7 +402,7 @@
         nombre, categoriaId, descripcion, imagen, precios, disponible,
         orden: existing.orden ?? 999,
         destacado: existing.destacado ?? false,
-        esComplemento: existing.esComplemento ?? false
+        esComplemento
       };
 
       try {
@@ -665,6 +670,7 @@
             <th>Categoría</th>
             <th>Descripción</th>
             <th>Imagen (archivo)</th>
+            <th>Tipo</th>
             <th>S</th>
             <th>M</th>
             <th>L</th>
@@ -836,6 +842,7 @@
           <td><select class="f-categoria">${categoriaOptions(p.categoriaId)}</select></td>
           <td><input type="text" class="f-descripcion" value="${p.descripcion || ''}" /></td>
           <td><input type="text" class="f-imagen" value="${p.imagen || ''}" placeholder="nombre.jpg" /></td>
+          <td><label class="extra-toggle"><input type="checkbox" class="f-extra" ${p.esComplemento ? 'checked' : ''} /> Topping extra</label></td>
           <td class="precio"><input type="number" class="f-S" value="${precios.S ?? ''}" /></td>
           <td class="precio"><input type="number" class="f-M" value="${precios.M ?? ''}" /></td>
           <td class="precio"><input type="number" class="f-L" value="${precios.L ?? ''}" /></td>
@@ -873,6 +880,7 @@
       const categoriaId = tr.querySelector('.f-categoria').value;
       const descripcion = tr.querySelector('.f-descripcion').value.trim();
       const imagen = tr.querySelector('.f-imagen').value.trim();
+      const esComplemento = tr.querySelector('.f-extra').checked;
       const S = numOrNull(tr.querySelector('.f-S').value);
       const M = numOrNull(tr.querySelector('.f-M').value);
       const L = numOrNull(tr.querySelector('.f-L').value);
@@ -890,7 +898,7 @@
         nombre, categoriaId, descripcion, imagen, precios, disponible,
         orden: existing.orden ?? 999,
         destacado: existing.destacado ?? false,
-        esComplemento: existing.esComplemento ?? false
+        esComplemento
       };
 
       try {

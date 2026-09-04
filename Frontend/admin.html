@@ -16,6 +16,7 @@
       --muted: #746f6b;
       --radius: 10px;
     }
+
     * { box-sizing: border-box; }
     body { margin:0; font-family:'DM Sans', Arial, sans-serif; background:var(--paper); color:var(--black); }
     header { background:var(--black); color:var(--white); padding:18px 24px; display:flex; justify-content:space-between; align-items:center; }
@@ -57,6 +58,14 @@
       padding:10px 14px; border-radius:7px; border:1px solid rgba(0,0,0,0.15); font-size:13px; font-family:inherit;
     }
     .toolbar button.primary { background:var(--green); color:var(--white); border:none; font-weight:700; cursor:pointer; }
+    .categories-panel { margin:0 0 18px; padding:16px; background:var(--white); border-radius:var(--radius); box-shadow:0 4px 16px rgba(0,0,0,0.05); }
+    .sub-toolbar { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:12px; }
+    .sub-toolbar h2 { margin:0; color:var(--green); font:700 20px Georgia, serif; }
+    .sub-toolbar button { padding:8px 12px; border:1px solid var(--green); border-radius:7px; background:#fff; color:var(--green); font-weight:700; cursor:pointer; }
+    .category-row { display:grid; grid-template-columns:minmax(180px,1fr) 110px auto; gap:8px; align-items:center; margin-bottom:8px; }
+    .category-row input { width:100%; height:36px; padding:6px 8px; border:1px solid rgba(0,0,0,0.12); border-radius:6px; font:inherit; }
+    .category-row .category-delete { padding:7px 10px; border:0; border-radius:5px; background:#fdecea; color:#b00020; cursor:pointer; }
+    .pending-delete { display:none; }
 
     table {
       width:100%; min-width:1180px; table-layout:fixed; border-collapse:separate; border-spacing:0;
@@ -73,6 +82,8 @@
     td select.f-categoria {
       text-align:left;
     }
+    .extra-toggle { display:flex; align-items:center; gap:6px; white-space:nowrap; font-size:11px; color:var(--green); font-weight:700; }
+    .extra-toggle input { accent-color:var(--green); }
     td.precio { width:110px; min-width:110px; }
     th:nth-child(5), th:nth-child(6), th:nth-child(7), th:nth-child(8),
     td.precio {
@@ -115,6 +126,7 @@
     .tab-panel { display:none; }
     .tab-panel.active { display:block; }
     #tab-productos { overflow-x:auto; }
+    body > main:nth-of-type(2) { display:none !important; }
 
     /* ── PEDIDOS ──────────────────────────────────────── */
     .order-card {
@@ -181,7 +193,16 @@
           <option value="">Todas las categorías</option>
         </select>
         <button class="primary" id="addRowBtn">+ Agregar producto</button>
+        <button class="primary" id="saveAllBtn">Guardar todos los cambios</button>
       </div>
+
+      <section class="categories-panel">
+        <div class="sub-toolbar">
+          <h2>Categorías</h2>
+          <button type="button" id="addCategoryBtn">+ Agregar categoría</button>
+        </div>
+        <div id="categoriesList"></div>
+      </section>
 
       <table>
         <thead>
@@ -190,6 +211,7 @@
             <th>Categoría</th>
             <th>Descripción</th>
             <th>Imagen (archivo)</th>
+            <th>Tipo</th>
             <th>S</th>
             <th>M</th>
             <th>L</th>
@@ -246,7 +268,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
     import {
-      getFirestore, collection, getDocs, doc, setDoc, deleteDoc, updateDoc, query, orderBy
+      getFirestore, collection, getDocs, doc, setDoc, deleteDoc, updateDoc, query, orderBy, writeBatch
     } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
     import {
       getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut
@@ -320,6 +342,8 @@
     /* ── DATOS ─────────────────────────────────────────── */
     let categorias = [];
     let productos = [];
+    const deletedProductIds = new Set();
+    const deletedCategoryIds = new Set();
 
     function categoryDisplayName(name) {
       const value = String(name ?? '').trim();
@@ -366,9 +390,10 @@
         categorias.map(c => `<option value="${c.id}">${categoryDisplayName(c.nombre)}</option>`).join('');
 
       renderTable();
+      renderCategories();
     }
 
-    document.getElementById('categoriaFilter').addEventListener('change', renderTable);
+    document.getElementById('categoriaFilter').addEventListener('change', applyProductFilter);
 
     function categoriaOptions(selectedId) {
       return categorias.map(c =>
@@ -377,13 +402,47 @@
     }
 
     function renderTable() {
-      const filter = document.getElementById('categoriaFilter').value;
       const tbody = document.getElementById('productsBody');
-      const list = filter ? productos.filter(p => p.categoriaId === filter) : productos;
 
-      tbody.innerHTML = list.map(p => rowHtml(p)).join('');
+      tbody.innerHTML = productos
+        .filter(p => !deletedProductIds.has(p.id))
+        .map(p => rowHtml(p)).join('');
 
       tbody.querySelectorAll('tr').forEach(tr => bindRow(tr));
+      applyProductFilter();
+    }
+
+    function applyProductFilter() {
+      const filter = document.getElementById('categoriaFilter').value;
+      document.querySelectorAll('#productsBody tr').forEach(row => {
+        row.hidden = Boolean(filter && row.querySelector('.f-categoria').value !== filter);
+      });
+    }
+
+    function renderCategories() {
+      const container = document.getElementById('categoriesList');
+      container.innerHTML = categorias
+        .filter(c => !deletedCategoryIds.has(c.id))
+        .map(c => `
+          <div class="category-row" data-id="${c.id}">
+            <input class="category-name" type="text" value="${c.nombre || ''}" placeholder="Nombre de categoría" />
+            <input class="category-order" type="number" value="${c.orden ?? 999}" min="0" />
+            <button type="button" class="category-delete">Quitar</button>
+          </div>
+        `).join('');
+
+      container.querySelectorAll('.category-delete').forEach(button => {
+        button.addEventListener('click', () => {
+          const row = button.closest('.category-row');
+          const id = row.dataset.id;
+          if (productos.some(p => p.categoriaId === id && !deletedProductIds.has(p.id))) {
+            showStatus('Reasigna los productos antes de quitar la categoría');
+            return;
+          }
+          deletedCategoryIds.add(id);
+          row.remove();
+        });
+      });
     }
 
     function rowHtml(p) {
@@ -394,15 +453,13 @@
           <td><select class="f-categoria">${categoriaOptions(p.categoriaId)}</select></td>
           <td><input type="text" class="f-descripcion" value="${p.descripcion || ''}" /></td>
           <td><input type="text" class="f-imagen" value="${p.imagen || ''}" placeholder="nombre.jpg" /></td>
+          <td><label class="extra-toggle"><input type="checkbox" class="f-extra" ${p.esComplemento ? 'checked' : ''} /> Topping extra</label></td>
           <td class="precio"><input type="number" class="f-S" value="${precios.S ?? ''}" /></td>
           <td class="precio"><input type="number" class="f-M" value="${precios.M ?? ''}" /></td>
           <td class="precio"><input type="number" class="f-L" value="${precios.L ?? ''}" /></td>
           <td class="precio"><input type="number" class="f-U" value="${precios.U ?? ''}" /></td>
           <td><button type="button" class="toggle-disp ${p.disponible ? 'on' : 'off'}" data-on="${p.disponible ? '1' : '0'}"></button></td>
-          <td class="row-actions">
-            <button type="button" class="save">Guardar</button>
-            <button type="button" class="delete">Eliminar</button>
-          </td>
+          <td class="row-actions"><button type="button" class="delete">Quitar</button></td>
         </tr>`;
     }
 
@@ -415,8 +472,12 @@
         toggleBtn.classList.toggle('off', isOn);
       });
 
-      tr.querySelector('.save').addEventListener('click', () => saveRow(tr));
-      tr.querySelector('.delete').addEventListener('click', () => deleteRow(tr));
+      tr.querySelector('.delete').addEventListener('click', () => {
+        const id = tr.dataset.id;
+        if (id) deletedProductIds.add(id);
+        tr.classList.add('pending-delete');
+        tr.remove();
+      });
     }
 
     function numOrNull(val) {
@@ -425,12 +486,13 @@
       return isNaN(n) ? null : n;
     }
 
-    async function saveRow(tr) {
+    function productDataFromRow(tr) {
       const id = tr.dataset.id;
       const nombre = tr.querySelector('.f-nombre').value.trim();
       const categoriaId = tr.querySelector('.f-categoria').value;
       const descripcion = tr.querySelector('.f-descripcion').value.trim();
       const imagen = tr.querySelector('.f-imagen').value.trim();
+      const esComplemento = tr.querySelector('.f-extra').checked;
       const S = numOrNull(tr.querySelector('.f-S').value);
       const M = numOrNull(tr.querySelector('.f-M').value);
       const L = numOrNull(tr.querySelector('.f-L').value);
@@ -444,32 +506,71 @@
       if (U !== null) precios.U = U;
 
       const existing = productos.find(p => p.id === id) || {};
-      const data = {
+      return {
+        id: id || slugify(nombre),
         nombre, categoriaId, descripcion, imagen, precios, disponible,
         orden: existing.orden ?? 999,
         destacado: existing.destacado ?? false,
-        esComplemento: existing.esComplemento ?? false
+        esComplemento
       };
-
-      try {
-        await setDoc(doc(db, 'productos', id || slugify(nombre)), data);
-        showStatus('Guardado ✓');
-        await loadAll();
-      } catch (e) {
-        showStatus('Error al guardar');
-        console.error(e);
-      }
     }
 
-    async function deleteRow(tr) {
-      const id = tr.dataset.id;
-      if (!confirm('¿Eliminar este producto?')) return;
+    function categoryDataFromRow(row) {
+      return {
+        id: row.dataset.id,
+        nombre: row.querySelector('.category-name').value.trim(),
+        orden: numOrNull(row.querySelector('.category-order').value) ?? 999
+      };
+    }
+
+    async function saveAll() {
+      const batch = writeBatch(db);
+      const productRows = [...document.querySelectorAll('#productsBody tr')];
+      const categoryRows = [...document.querySelectorAll('#categoriesList .category-row')];
+      const categoryIds = new Set(categorias.map(c => c.id));
+
       try {
-        await deleteDoc(doc(db, 'productos', id));
-        showStatus('Eliminado');
+        deletedProductIds.forEach(id => batch.delete(doc(db, 'productos', id)));
+        deletedCategoryIds.forEach(id => batch.delete(doc(db, 'categorias', id)));
+
+        categoryRows.forEach(row => {
+          const data = categoryDataFromRow(row);
+          if (!data.nombre) throw new Error('Todas las categorías deben tener nombre');
+          const id = data.id || slugify(data.nombre);
+          batch.set(doc(db, 'categorias', id), {
+            nombre: data.nombre,
+            orden: data.orden
+          });
+          if (!categoryIds.has(data.id)) {
+            productos.forEach(product => {
+              if (product.categoriaId === data.id) product.categoriaId = id;
+            });
+          }
+        });
+
+        productRows.forEach(row => {
+          const data = productDataFromRow(row);
+          if (!data.nombre) throw new Error('Todos los productos deben tener nombre');
+          batch.set(doc(db, 'productos', data.id), {
+            nombre: data.nombre,
+            categoriaId: data.categoriaId,
+            descripcion: data.descripcion,
+            imagen: data.imagen,
+            precios: data.precios,
+            disponible: data.disponible,
+            orden: data.orden,
+            destacado: data.destacado,
+            esComplemento: data.esComplemento
+          });
+        });
+
+        await batch.commit();
+        deletedProductIds.clear();
+        deletedCategoryIds.clear();
+        showStatus('Todos los cambios fueron guardados ✓');
         await loadAll();
       } catch (e) {
-        showStatus('Error al eliminar');
+        showStatus(e.message || 'Error al guardar los cambios');
         console.error(e);
       }
     }
@@ -483,15 +584,37 @@
 
     document.getElementById('addRowBtn').addEventListener('click', () => {
       const tbody = document.getElementById('productsBody');
+      const selectedCategoryId = document.getElementById('categoriaFilter').value;
       const newProd = {
-        id: '', nombre: 'Nuevo producto', categoriaId: categorias[0]?.id || '',
+        id: '', nombre: 'Nuevo producto',
+        categoriaId: selectedCategoryId || categorias[0]?.id || '',
         descripcion: '', imagen: '', precios: {}, disponible: true
       };
       tbody.insertAdjacentHTML('afterbegin', rowHtml(newProd));
       const tr = tbody.querySelector('tr');
       tr.classList.add('new-row');
       bindRow(tr);
+      applyProductFilter();
     });
+
+    document.getElementById('addCategoryBtn').addEventListener('click', () => {
+      const id = slugify('nueva-categoria');
+      categorias.push({ id, nombre: 'Nueva categoría', orden: 999 });
+      document.getElementById('categoriaFilter').insertAdjacentHTML(
+        'beforeend',
+        '<option value="' + id + '">Nueva categoría</option>'
+      );
+      document.getElementById('categoriaFilter').value = id;
+      renderCategories();
+      document.querySelectorAll('.f-categoria').forEach(select => {
+        if (!select.querySelector(`option[value="${id}"]`)) {
+          select.insertAdjacentHTML('beforeend', `<option value="${id}">Nueva categoría</option>`);
+        }
+      });
+      document.querySelector(`#categoriesList [data-id="${id}"] .category-name`).focus();
+    });
+
+    document.getElementById('saveAllBtn').addEventListener('click', saveAll);
 
     /* ── PEDIDOS ───────────────────────────────────────── */
     let pedidos = [];
@@ -769,7 +892,7 @@
 
   <div id="status"></div>
 
-  <script type="module">
+  <script type="text/plain">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
     import {
       getFirestore, collection, getDocs, doc, setDoc, deleteDoc, updateDoc, query, orderBy
