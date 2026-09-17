@@ -191,13 +191,12 @@
   var form      = document.getElementById('checkoutForm');
   var WA_NUMBER = '573133056850';
 
-  function encodeWhatsAppText(text) {
-    if (typeof TextEncoder === 'function') {
-      return Array.from(new TextEncoder().encode(text), function(byte) {
-        return '%' + byte.toString(16).padStart(2, '0').toUpperCase();
-      }).join('');
+  function buildWhatsAppUrl(text) {
+    var isChromium = /Chrome|Chromium|CriOS|Edg\//.test(navigator.userAgent);
+    if (isChromium) {
+      return 'https://api.whatsapp.com/send?phone=' + WA_NUMBER + '&text=' + encodeURIComponent(text);
     }
-    return encodeURIComponent(text);
+    return 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(text);
   }
 
   form.addEventListener('submit', function(e) {
@@ -226,7 +225,7 @@
 
     // Construir mensaje en texto plano (maxima compatibilidad WhatsApp)
     var lines = [];
-    lines.push('\u{1F964} *PEDIDO BOYATE*');
+    lines.push('\uD83E\uDD64 *PEDIDO BOYATE*');
     lines.push('');
 
     var total = 0;
@@ -239,26 +238,26 @@
     });
 
     lines.push('');
-    lines.push('\u{1F4B0} *Total: ' + fmtPrice(total) + '*');
+    lines.push('\uD83D\uDCB0 *Total: ' + fmtPrice(total) + '*');
     lines.push('');
-    lines.push((serviceType === 'Domicilio' ? '\u{1F6F5}' : '\u{1F3E0}') + ' *Servicio:* ' + serviceType);
+    lines.push((serviceType === 'Domicilio' ? '\uD83D\uDEF5' : '\uD83C\uDFE0') + ' *Servicio:* ' + serviceType);
 
     if (serviceType === 'Domicilio') {
       var dir = address;
       if (apartment) dir += ' - ' + apartment;
-      if (dir) lines.push('\u{1F4CD} *Dirección:* ' + dir);
+      if (dir) lines.push('\uD83D\uDCCD *Dirección:* ' + dir);
     }
 
-    if (name)  lines.push('\u{1F464} *Nombre:* ' + name);
-    if (time)  lines.push('\u{1F550} *Hora:* ' + time);
-    if (notes) lines.push('\u{1F4DD} *Notas:* ' + notes);
+    if (name)  lines.push('\uD83D\uDC64 *Nombre:* ' + name);
+    if (time)  lines.push('\uD83D\uDD50 *Hora:* ' + time);
+    if (notes) lines.push('\uD83D\uDCDD *Notas:* ' + notes);
 
     lines.push('');
-    lines.push('\u{1F44B} ¡Gracias!');
+    lines.push('\uD83D\uDC4B ¡Gracias!');
 
     var msg = lines.join('\n');
     // Navegación directa para evitar bloqueos de window.open en Safari.
-    window.location.href = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeWhatsAppText(msg);
+    window.location.href = buildWhatsAppUrl(msg);
   });
 
 })();

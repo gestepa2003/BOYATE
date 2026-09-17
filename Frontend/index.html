@@ -924,13 +924,12 @@ updateDeliveryFields();
 const form      = document.getElementById('checkoutForm');
 const WA_NUMBER = '573133056850';
 
-function encodeWhatsAppText(text) {
-  if (typeof TextEncoder === 'function') {
-    return Array.from(new TextEncoder().encode(text), byte =>
-      '%' + byte.toString(16).padStart(2, '0').toUpperCase()
-    ).join('');
+function buildWhatsAppUrl(text) {
+  const isChromium = /Chrome|Chromium|CriOS|Edg\//.test(navigator.userAgent);
+  if (isChromium) {
+    return 'https://api.whatsapp.com/send?phone=' + WA_NUMBER + '&text=' + encodeURIComponent(text);
   }
-  return encodeURIComponent(text);
+  return 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(text);
 }
 
 function showContinueDialog(message, onContinue) {
@@ -1002,7 +1001,7 @@ form.addEventListener('submit', async e => {
   }
 
   // Construir mensaje WhatsApp
-  const lines = ['\u{1F964} *PEDIDO BOYATE*', ''];
+  const lines = ['\uD83E\uDD64 *PEDIDO BOYATE*', ''];
   let total = 0;
   const itemsForDb = [];
 
@@ -1015,16 +1014,16 @@ form.addEventListener('submit', async e => {
     itemsForDb.push({ name: item.name, size: item.size, unitPrice: item.unitPrice, qty: item.qty, subtotal });
   });
 
-  lines.push('', '\u{1F4B0} *Total: ' + fmtPrice(total) + '*', '');
-  lines.push((serviceType === 'Domicilio' ? '\u{1F6F5}' : '\u{1F3E0}') + ' *Servicio:* ' + serviceType);
+  lines.push('', '\uD83D\uDCB0 *Total: ' + fmtPrice(total) + '*', '');
+  lines.push((serviceType === 'Domicilio' ? '\uD83D\uDEF5' : '\uD83C\uDFE0') + ' *Servicio:* ' + serviceType);
   if (serviceType === 'Domicilio') {
     const dir = address + (apartment ? ' - ' + apartment : '');
-    if (dir.trim()) lines.push('\u{1F4CD} *Dirección:* ' + dir);
+    if (dir.trim()) lines.push('\uD83D\uDCCD *Dirección:* ' + dir);
   }
-  if (name)  lines.push('\u{1F464} *Nombre:* ' + name);
-  if (time)  lines.push('\u{1F550} *Hora:* ' + time);
-  if (notes) lines.push('\u{1F4DD} *Notas:* ' + notes);
-  lines.push('', '\u{1F44B} ¡Gracias!');
+  if (name)  lines.push('\uD83D\uDC64 *Nombre:* ' + name);
+  if (time)  lines.push('\uD83D\uDD50 *Hora:* ' + time);
+  if (notes) lines.push('\uD83D\uDCDD *Notas:* ' + notes);
+  lines.push('', '\uD83D\uDC4B ¡Gracias!');
 
   // Guardar en Firestore
   try {
@@ -1040,7 +1039,7 @@ form.addEventListener('submit', async e => {
       status: 'pendiente',
       createdAt: serverTimestamp()
     });
-    const whatsappUrl = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeWhatsAppText(lines.join('\n'));
+    const whatsappUrl = buildWhatsAppUrl(lines.join('\n'));
     Object.keys(cart).forEach(k => delete cart[k]);
     renderCart();
     allMenuItems.forEach(item => { if (item._resetQty) item._resetQty(); });
@@ -1056,7 +1055,7 @@ form.addEventListener('submit', async e => {
   }
 
   // Navegación directa: evita que Safari bloquee window.open después de la espera de Firebase.
-  window.location.href = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeWhatsAppText(lines.join('\n'));
+  window.location.href = buildWhatsAppUrl(lines.join('\n'));
 
   // Limpiar
   Object.keys(cart).forEach(k => delete cart[k]);
