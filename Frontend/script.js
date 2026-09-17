@@ -217,7 +217,7 @@
 
     // Construir mensaje en texto plano (maxima compatibilidad WhatsApp)
     var lines = [];
-    lines.push('🥤 *PEDIDO BOYATE*');
+    lines.push('\u{1F964} *PEDIDO BOYATE*');
     lines.push('');
 
     var total = 0;
@@ -230,22 +230,22 @@
     });
 
     lines.push('');
-    lines.push('💰 *Total: ' + fmtPrice(total) + '*');
+    lines.push('\u{1F4B0} *Total: ' + fmtPrice(total) + '*');
     lines.push('');
-    lines.push((serviceType === 'Domicilio' ? '🛵' : '🏠') + ' *Servicio:* ' + serviceType);
+    lines.push((serviceType === 'Domicilio' ? '\u{1F6F5}' : '\u{1F3E0}') + ' *Servicio:* ' + serviceType);
 
     if (serviceType === 'Domicilio') {
       var dir = address;
       if (apartment) dir += ' - ' + apartment;
-      if (dir) lines.push('📍 *Dirección:* ' + dir);
+      if (dir) lines.push('\u{1F4CD} *Dirección:* ' + dir);
     }
 
-    if (name)  lines.push('👤 *Nombre:* ' + name);
-    if (time)  lines.push('🕐 *Hora:* ' + time);
-    if (notes) lines.push('📝 *Notas:* ' + notes);
+    if (name)  lines.push('\u{1F464} *Nombre:* ' + name);
+    if (time)  lines.push('\u{1F550} *Hora:* ' + time);
+    if (notes) lines.push('\u{1F4DD} *Notas:* ' + notes);
 
     lines.push('');
-    lines.push('👋 ¡Gracias!');
+    lines.push('\u{1F44B} ¡Gracias!');
 
     var msg = lines.join('\n');
     // Navegación directa para evitar bloqueos de window.open en Safari.
