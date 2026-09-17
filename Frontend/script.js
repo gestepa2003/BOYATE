@@ -191,6 +191,15 @@
   var form      = document.getElementById('checkoutForm');
   var WA_NUMBER = '573133056850';
 
+  function encodeWhatsAppText(text) {
+    if (typeof TextEncoder === 'function') {
+      return Array.from(new TextEncoder().encode(text), function(byte) {
+        return '%' + byte.toString(16).padStart(2, '0').toUpperCase();
+      }).join('');
+    }
+    return encodeURIComponent(text);
+  }
+
   form.addEventListener('submit', function(e) {
     e.preventDefault();
 
@@ -249,7 +258,7 @@
 
     var msg = lines.join('\n');
     // Navegación directa para evitar bloqueos de window.open en Safari.
-    window.location.href = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(msg);
+    window.location.href = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeWhatsAppText(msg);
   });
 
 })();

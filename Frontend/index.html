@@ -924,6 +924,43 @@ updateDeliveryFields();
 const form      = document.getElementById('checkoutForm');
 const WA_NUMBER = '573133056850';
 
+function encodeWhatsAppText(text) {
+  if (typeof TextEncoder === 'function') {
+    return Array.from(new TextEncoder().encode(text), byte =>
+      '%' + byte.toString(16).padStart(2, '0').toUpperCase()
+    ).join('');
+  }
+  return encodeURIComponent(text);
+}
+
+function showContinueDialog(message, onContinue) {
+  const dialog = document.createElement('div');
+  dialog.setAttribute('role', 'dialog');
+  dialog.setAttribute('aria-modal', 'true');
+  dialog.style.cssText = 'position:fixed;inset:0;z-index:100000;display:grid;place-items:center;background:rgba(0,0,0,.45);padding:24px;';
+
+  const card = document.createElement('div');
+  card.style.cssText = 'width:min(100%,420px);padding:24px;border-radius:16px;background:#fff;color:#111;box-shadow:0 12px 36px rgba(0,0,0,.25);font:16px/1.45 Arial,sans-serif;';
+
+  const text = document.createElement('p');
+  text.textContent = message;
+  text.style.margin = '0 0 20px';
+
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.textContent = 'Continuar';
+  button.style.cssText = 'display:block;margin-left:auto;padding:10px 20px;border:0;border-radius:8px;background:#245a46;color:#fff;font:700 15px Arial,sans-serif;cursor:pointer;';
+  button.addEventListener('click', () => {
+    dialog.remove();
+    onContinue();
+  });
+
+  card.append(text, button);
+  dialog.appendChild(card);
+  document.body.appendChild(dialog);
+  button.focus();
+}
+
 form.addEventListener('submit', async e => {
   e.preventDefault();
 
@@ -1003,14 +1040,23 @@ form.addEventListener('submit', async e => {
       status: 'pendiente',
       createdAt: serverTimestamp()
     });
-    alert('✅ ¡Pedido tomado! Te redirigimos a WhatsApp para confirmar.');
+    const whatsappUrl = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeWhatsAppText(lines.join('\n'));
+    Object.keys(cart).forEach(k => delete cart[k]);
+    renderCart();
+    allMenuItems.forEach(item => { if (item._resetQty) item._resetQty(); });
+    form.reset();
+    updateDeliveryFields();
+    showContinueDialog('¡Pedido tomado! Te redirigimos a WhatsApp para confirmar.', () => {
+      window.location.href = whatsappUrl;
+    });
+    return;
   } catch (err) {
     console.error('Error guardando pedido:', err);
     alert('⚠️ No se pudo registrar el pedido, pero igual te enviamos a WhatsApp.');
   }
 
   // Navegación directa: evita que Safari bloquee window.open después de la espera de Firebase.
-  window.location.href = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(lines.join('\n'));
+  window.location.href = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeWhatsAppText(lines.join('\n'));
 
   // Limpiar
   Object.keys(cart).forEach(k => delete cart[k]);
