@@ -1009,7 +1009,8 @@ form.addEventListener('submit', async e => {
     alert('⚠️ No se pudo registrar el pedido, pero igual te enviamos a WhatsApp.');
   }
 
-  window.open('https://api.whatsapp.com/send?phone=' + WA_NUMBER + '&text=' + encodeURIComponent(lines.join('\n')), '_blank');
+  // Navegación directa: evita que Safari bloquee window.open después de la espera de Firebase.
+  window.location.href = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(lines.join('\n'));
 
   // Limpiar
   Object.keys(cart).forEach(k => delete cart[k]);

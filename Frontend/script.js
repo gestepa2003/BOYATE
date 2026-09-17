@@ -248,7 +248,8 @@
     lines.push('👋 ¡Gracias!');
 
     var msg = lines.join('\n');
-    window.open('https://api.whatsapp.com/send?phone=' + WA_NUMBER + '&text=' + encodeURIComponent(msg), '_blank');
+    // Navegación directa para evitar bloqueos de window.open en Safari.
+    window.location.href = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(msg);
   });
 
 })();
