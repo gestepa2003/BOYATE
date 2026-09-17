@@ -143,7 +143,12 @@
           <h2>Natural, fresco y real</h2>
                     <h3>Nuestros jugos se preparan sin azúcar añadida. Si deseas endulzar tu bebida, puedes solicitar: Panela orgánica, Miel, Estevia. </h3>
           <p class="section-sub">Selecciona talla y cantidad directamente desde el menú para armar tu pedido.</p>
-
+                    <div class="category-selector">
+                      <label for="categoryFilter">Categoría</label>
+                      <select id="categoryFilter">
+                        <option value="">Todas las categorías</option>
+                      </select>
+                    </div>
         </div>
 
         <div class="menu-board">
@@ -692,6 +697,7 @@ function loadMenuFromFirestore() {
       const article = document.createElement('article');
       article.className = 'menu-category wide';
       article.dataset.cat = cat.id;
+      article.dataset.categoryName = normalizeCategoryName(cat.nombre);
 
       const heading = document.createElement('div');
       heading.className = 'category-title';
@@ -716,6 +722,8 @@ function loadMenuFromFirestore() {
         const isAvailable = p.disponible !== false;
         item.className = 'menu-item' + (p.destacado ? ' featured' : '') + (!isAvailable ? ' unavailable' : '');
         item.dataset.name = p.nombre || '';
+        item.dataset.categoryId = cat.id;
+        item.dataset.categoryName = normalizeCategoryName(cat.nombre);
         item.dataset.prices = JSON.stringify(precios);
         item.dataset.available = isAvailable ? 'true' : 'false';
 
@@ -760,7 +768,29 @@ function loadMenuFromFirestore() {
     }
 
     document.querySelectorAll('.menu-item[data-name]').forEach(bindItemControls);
+    renderCategoryFilter(categorias);
   }
+
+  function renderCategoryFilter(categories) {
+    const filter = document.getElementById('categoryFilter');
+    if (!filter) return;
+    const selected = filter.value;
+    filter.innerHTML = '<option value="">Todas las categorías</option>' +
+      categories.map(cat => `<option value="${cat.id}">${normalizeCategoryName(cat.nombre)}</option>`).join('');
+    filter.value = categories.some(cat => cat.id === selected) ? selected : '';
+    filter.onchange = () => {
+      const value = filter.value;
+      document.querySelectorAll('.menu-category').forEach(article => {
+        article.hidden = Boolean(value && article.dataset.cat !== value);
+      });
+    };
+    filter.dispatchEvent(new Event('change'));
+  }
+
+  renderCategoryFilter(Array.from(document.querySelectorAll('.menu-category')).map(article => ({
+    id: article.dataset.cat,
+    nombre: article.dataset.categoryName || (article.querySelector('h3') && article.querySelector('h3').textContent) || article.dataset.cat
+  })));
 
   onSnapshot(
     query(collection(db, 'categorias'), orderBy('orden')),
@@ -856,17 +886,17 @@ function renderCart() {
     line.innerHTML =
       '<div class="cart-line-info">' +
         '<strong>' + item.name + sizeLabel + '</strong>' +
-        '<span>' + item.qty + ' x ' + fmtPrice(item.unitPrice) + '</span>' +
+        '<span>' + (item.category ? item.category + ' · ' : '') + item.qty + ' x ' + fmtPrice(item.unitPrice) + '</span>' +
       '</div><b>' + fmtPrice(subtotal) + '</b>';
     cartItemsEl.appendChild(line);
   });
   cartTotalEl.textContent = fmtPrice(total);
 }
 
-function setCartItem(name, size, unitPrice, qty) {
+function setCartItem(name, size, unitPrice, qty, category) {
   const k = cartKey(name, size);
   if (qty <= 0) delete cart[k];
-  else cart[k] = { name, size, unitPrice, qty };
+  else cart[k] = { name, size, unitPrice, qty, category };
   renderCart();
 }
 
@@ -874,6 +904,10 @@ const allMenuItems = document.querySelectorAll('.menu-item[data-name]');
 
 function bindItemControls(menuItem) {
   const name      = menuItem.dataset.name;
+  const category = menuItem.closest('.menu-category');
+  const categoryName = menuItem.dataset.categoryName ||
+    (category && category.dataset.categoryName) ||
+    (category && category.querySelector('h3') && category.querySelector('h3').textContent) || '';
   const isAvailable = menuItem.dataset.available !== 'false';
   const prices    = JSON.parse(menuItem.dataset.prices || '{}');
   const minusBtn  = menuItem.querySelector('.qty-minus');
@@ -885,7 +919,10 @@ function bindItemControls(menuItem) {
   let qty = 0;
   const currentSize  = () => sizeSelect ? sizeSelect.value : (Object.keys(prices)[0] || 'U');
   const currentPrice = () => prices[currentSize()] || Object.values(prices)[0] || 0;
-  function update() { valueEl.textContent = qty; setCartItem(name, currentSize(), currentPrice(), qty); }
+  function update() {
+    valueEl.textContent = qty;
+    setCartItem(name, currentSize(), currentPrice(), qty, categoryName);
+  }
 
   plusBtn.addEventListener('click',  () => {
     if (!isAvailable) {
@@ -1010,8 +1047,8 @@ form.addEventListener('submit', async e => {
     const subtotal = item.unitPrice * item.qty;
     total += subtotal;
     const sizeLabel = item.size === 'U' ? '' : ' (' + item.size + ')';
-    lines.push('• ' + item.name + sizeLabel + ' x' + item.qty + ' = ' + fmtPrice(subtotal));
-    itemsForDb.push({ name: item.name, size: item.size, unitPrice: item.unitPrice, qty: item.qty, subtotal });
+    lines.push('• ' + (item.category ? '[' + item.category + '] ' : '') + item.name + sizeLabel + ' x' + item.qty + ' = ' + fmtPrice(subtotal));
+    itemsForDb.push({ category: item.category || null, name: item.name, size: item.size, unitPrice: item.unitPrice, qty: item.qty, subtotal });
   });
 
   lines.push('', '\uD83D\uDCB0 *Total: ' + fmtPrice(total) + '*', '');

@@ -679,7 +679,8 @@
       const status = p.status || 'pendiente';
       const itemsHtml = (p.items || []).map(it => {
         const sizeLabel = (it.size === 'U' || !it.size) ? '' : ` (${it.size})`;
-        return `<li>${it.name}${sizeLabel} x${it.qty} — ${fmtPrice(it.subtotal)}</li>`;
+        const categoryLabel = it.category ? `[${it.category}] ` : '';
+        return `<li>${categoryLabel}${it.name}${sizeLabel} x${it.qty} — ${fmtPrice(it.subtotal)}</li>`;
       }).join('');
 
       let extra = '';
@@ -1205,7 +1206,8 @@
       const status = p.status || 'pendiente';
       const itemsHtml = (p.items || []).map(it => {
         const sizeLabel = (it.size === 'U' || !it.size) ? '' : ` (${it.size})`;
-        return `<li>${it.name}${sizeLabel} x${it.qty} — ${fmtPrice(it.subtotal)}</li>`;
+        const categoryLabel = it.category ? `[${it.category}] ` : '';
+        return `<li>${categoryLabel}${it.name}${sizeLabel} x${it.qty} — ${fmtPrice(it.subtotal)}</li>`;
       }).join('');
 
       let extra = '';
